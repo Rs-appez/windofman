@@ -34,8 +34,8 @@ class WindowManager():
 
         self.current_window = self.windows[index]
 
-        self.active_current_window()
+        self.__active_current_window()
 
-    def active_current_window(self):
+    def __active_current_window(self):
         self.ewmh.setActiveWindow(self.current_window)
         self.ewmh.display.flush()
