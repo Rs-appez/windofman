@@ -16,7 +16,7 @@ class WindowManager():
     def get_windows(self):
         windows = []
         for window in self.ewmh.getClientList():
-            if 'Firefox' in self.get_window_name(window):
+            if 'Dofus' in self.get_window_name(window):
                 windows.append(window)
         return windows
 
@@ -34,8 +34,10 @@ class WindowManager():
         step = 1 if forward else -1
         index = self.windows.index(self.current_window) + step
 
-        if not index < len(self.windows) or not index > 0:
+        if not index < len(self.windows):
             index = 0
+        elif index < 0:
+            index = len(self.windows)-1
 
         self.current_window = self.windows[index]
 
@@ -48,7 +50,7 @@ class WindowManager():
     def __sort_windows(self):
         conf = self.__manage_config_file()
         self.windows = sorted(self.windows, key=lambda w : conf[self.get_window_name(w)])
-        print ('ok')
+
 
     def __manage_config_file(self) -> dict():
         conf_file = Path("config.json")
