@@ -15,9 +15,9 @@ class KeyboardManager():
             self.alt_pressed = True
         
         try :
-            if self.alt_pressed and key.char == 'q':
+            if key == keyboard.Key.f2:
                 self.windowManager.next() 
-            if self.alt_pressed and key.char == 's':
+            if key == keyboard.Key.f3:
                 self.windowManager.previous()
         except AttributeError:
 
