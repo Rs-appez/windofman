@@ -16,7 +16,7 @@ class WindowManager():
     def get_windows(self):
         windows = []
         for window in self.ewmh.getClientList():
-            if 'Dofus' in self.get_window_name(window):
+            if b'Dofus' in self.ewmh.getWmName(window):
                 windows.append(window)
         return windows
 
@@ -70,4 +70,5 @@ class WindowManager():
         return conf
 
     def get_window_name(self,window) -> str :
-        return str(self.ewmh.getWmName(window))
+
+        return str(self.ewmh.getWmName(window)).split()[0]
