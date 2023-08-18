@@ -1,5 +1,6 @@
 evdev==1.6.1
 ewmh==0.1.6
 pynput==1.7.6
+PySimpleGUI==4.60.5
 python-xlib==0.33
 six==1.16.0
