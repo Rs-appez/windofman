@@ -38,7 +38,7 @@ class WindowConfig():
 
     def __get_layout(self):
         self.__get_active_character()
-
+        initiative = ConfManager.get_json()
         character_names = []
         inputs = []
         buttons = [
@@ -46,7 +46,7 @@ class WindowConfig():
             ]
         for character in self.active_characters:
             character_names.append([sg.Text(character)])
-            inputs.append([sg.Input(size = 5,key=character)])
+            inputs.append([sg.Input(size = 5,key=character,default_text=initiative[character])])
 
         self.layout = [
             [sg.Column(character_names),

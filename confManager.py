@@ -14,7 +14,7 @@ class ConfManager():
                 cf.write('{}')    
                 
     @staticmethod
-    def __get_json() -> json:
+    def get_json() -> json:
         try :
             with open(CONF_FILE,'r') as cf:
                 content = json.load(cf)
@@ -27,7 +27,7 @@ class ConfManager():
         
         ConfManager.__check_conf_file()
 
-        initiative = ConfManager.__get_json()
+        initiative = ConfManager.get_json()
         
         for window in windows:
             if (not get_character_name(ewmh.getWmName(window)) in initiative 
@@ -43,7 +43,7 @@ class ConfManager():
     @staticmethod
     def set_initiative(values):
 
-        initiative = ConfManager.__get_json()
+        initiative = ConfManager.get_json()
         for key,value in values.items():
             try :
                 value = int(value)
