@@ -1,7 +1,7 @@
 from ewmh import EWMH
-from pathlib import Path
-import json
-import os
+
+from confManager import ConfManager
+from tools import get_character_name
 
 class WindowManager():
 
@@ -22,13 +22,13 @@ class WindowManager():
 
     def print_windows_name(self):
         for window in self.windows:
-            print(self.get_window_name(window))
+            print(get_character_name(self.ewmh.getWmName(window)))
 
     def next(self):
-       self.__switch(True)
+       self.__switch(1)
 
     def previous(self):
-        self.__switch(False)
+        self.__switch(0)
 
     def __switch(self, forward : bool):
         step = 1 if forward else -1
@@ -48,27 +48,5 @@ class WindowManager():
         self.ewmh.display.flush()
 
     def __sort_windows(self):
-        conf = self.__manage_config_file()
-        self.windows = sorted(self.windows, key=lambda w : conf[self.get_window_name(w)],reverse=True)
-
-
-    def __manage_config_file(self) -> dict():
-        conf_file = Path("config.json")
-        if not conf_file.is_file() :
-            with open("config.json",'w') as cf :
-                cf.write('{}')
-            conf_file = Path("config.json")
-        conf = json.load(conf_file.open())
-
-        for window in self.windows:
-            if not self.get_window_name(window) in conf:
-                conf[self.get_window_name(window)] = 0
-
-        with open("config.json",'w') as cf :
-            json.dump(conf, cf)
-
-        return conf
-
-    def get_window_name(self,window) -> str :
-
-        return str(self.ewmh.getWmName(window)).split()[0][2:]
+        initiative = ConfManager.get_initiative(self.windows,self.ewmh)
+        self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))],reverse=True)
