@@ -71,4 +71,4 @@ class WindowManager():
 
     def get_window_name(self,window) -> str :
 
-        return str(self.ewmh.getWmName(window)).split()[0]
+        return str(self.ewmh.getWmName(window)).split()[0][2:]
