@@ -9,7 +9,7 @@ class WindowManager():
 
         self.ewmh = EWMH()
         self.windows = self.get_windows()
-        self.current_window = self.windows[0]
+        self.current_window = self.windows[0] if self.windows else []
     
         self.__sort_windows()
 
