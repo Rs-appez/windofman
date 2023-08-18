@@ -49,7 +49,7 @@ class WindowManager():
 
     def __sort_windows(self):
         conf = self.__manage_config_file()
-        self.windows = sorted(self.windows, key=lambda w : conf[self.get_window_name(w)])
+        self.windows = sorted(self.windows, key=lambda w : conf[self.get_window_name(w)],reverse=True)
 
 
     def __manage_config_file(self) -> dict():
