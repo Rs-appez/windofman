@@ -8,9 +8,7 @@ class WindowConfig():
         self.window = sg.Window(title="Windofman", layout=[[]], margins=(600, 100))
 
     def start(self):
-
-        event,values = self.window.read()
-
         while 1 :
+            event,values = self.window.read()
             if event ==sg.WIN_CLOSED:
                 break
