@@ -8,17 +8,23 @@ class WindowManager():
     def __init__(self):
 
         self.ewmh = EWMH()
-        self.windows = self.get_windows()
-        self.current_window = self.windows[0] if self.windows else []
+        self.windows = []
+        self.current_window = []
     
-        self.__sort_windows()
+        self.get_windows()
 
     def get_windows(self):
         windows = []
         for window in self.ewmh.getClientList():
             if b'Dofus' in self.ewmh.getWmName(window):
                 windows.append(window)
-        return windows
+
+        self.windows = windows
+        self.sort_windows()
+        self.__set_current_window()
+
+    def __set_current_window(self): 
+        self.current_window = self.windows[0] if self.windows else []
 
     def print_windows_name(self):
         for window in self.windows:
@@ -47,6 +53,6 @@ class WindowManager():
         self.ewmh.setActiveWindow(self.current_window)
         self.ewmh.display.flush()
 
-    def __sort_windows(self):
+    def sort_windows(self):
         initiative = ConfManager.get_initiative(self.windows,self.ewmh)
         self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))],reverse=True)
