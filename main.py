@@ -5,7 +5,7 @@ from windowManager import WindowManager
 def main():
     
     wm = WindowManager()
-    wc = WindowConfig()
+    wc = WindowConfig(wm)
     KeyboardManager(wm)
     
     wm.print_windows_name()

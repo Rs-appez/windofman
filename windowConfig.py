@@ -1,15 +1,55 @@
+from windowManager import WindowManager
+from confManager import ConfManager
 
 import PySimpleGUI as sg
+from tools import get_character_name
 
 class WindowConfig():
 
-    def __init__(self) -> None:
-        
-        self.window = sg.Window(title="Windofman", layout=[[]], margins=(600, 100))
+    def __init__(self,wm : WindowManager) -> None:
+        self.wm = wm
+        self.active_characters = []
+        self.layout = []
+        self.__get_layout()
+        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10))
 
     def start(self):
         while 1 :
             event,values = self.window.read()
+            if event == 'save':
+                self.__save(values)
             if event ==sg.WIN_CLOSED:
                 break
         self.window.close()
+
+    def __get_active_character(self):
+        
+        self.active_characters = []
+        for window in self.wm.windows:
+            character = get_character_name(self.wm.ewmh.getWmName(window))
+            self.active_characters.append(character)
+
+    def __get_layout(self):
+        self.__get_active_character()
+
+        character_names = []
+        inputs = []
+        buttons = [
+            [sg.Button(button_text="refresh"),sg.Button(button_text="save")]
+            ]
+        for character in self.active_characters:
+            character_names.append([sg.Text(character)])
+            inputs.append([sg.Input(size = 5,key=character)])
+
+        self.layout = [
+            [sg.Column(character_names),
+            sg.Column(inputs),
+            ],
+            [sg.HSeparator(),],
+            [
+            sg.Column(buttons)
+            ]
+        ]
+
+    def __save(self,values):
+        ConfManager.set_initiative(values)

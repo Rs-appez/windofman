@@ -33,7 +33,25 @@ class ConfManager():
             if not get_character_name(ewmh.getWmName(window)) in initiative:
                 initiative[get_character_name(ewmh.getWmName(window))] = 0
 
-        with open(CONF_FILE,'w') as cf :
-            json.dump(initiative, cf)
+        ConfManager.save_initiative(initiative)
 
         return initiative
+
+
+    @staticmethod
+    def set_initiative(values):
+
+        initiative = ConfManager.__get_json()
+        for key,value in values.items():
+            try :
+                value = int(value)
+            except ValueError:
+                value = 0
+            initiative[key] = value    
+
+        ConfManager.save_initiative(initiative)
+
+    @staticmethod
+    def save_initiative(initiative):
+         with open(CONF_FILE,'w') as cf :
+            json.dump(initiative, cf)
