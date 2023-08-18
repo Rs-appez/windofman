@@ -30,8 +30,10 @@ class ConfManager():
         initiative = ConfManager.__get_json()
         
         for window in windows:
-            if not get_character_name(ewmh.getWmName(window)) in initiative:
-                initiative[get_character_name(ewmh.getWmName(window))] = 0
+            if (not get_character_name(ewmh.getWmName(window)) in initiative 
+                or type(initiative[get_character_name(ewmh.getWmName(window))]) != int) :
+                    initiative[get_character_name(ewmh.getWmName(window))] = 0
+                      
 
         ConfManager.save_initiative(initiative)
 
