@@ -9,4 +9,8 @@ class WindowConfig():
 
     def start(self):
 
-        self.window.read()
+        event,values = self.window.read()
+
+        while 1 :
+            if event ==sg.WIN_CLOSED:
+                break

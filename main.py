@@ -8,13 +8,10 @@ def main():
     wc = WindowConfig()
     KeyboardManager(wm)
     
-
+    wm.print_windows_name()
     wc.start()
 
-    wm.print_windows_name()
 
-    while 1 :
-        pass
 
 if __name__ == '__main__':
     main()
