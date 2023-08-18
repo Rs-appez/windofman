@@ -35,7 +35,7 @@ class ConfManager():
                     initiative[get_character_name(ewmh.getWmName(window))] = 0
                       
 
-        ConfManager.save_initiative(initiative)
+        ConfManager.__save_initiative(initiative)
 
         return initiative
 
@@ -51,9 +51,9 @@ class ConfManager():
                 value = 0
             initiative[key] = value    
 
-        ConfManager.save_initiative(initiative)
+        ConfManager.__save_initiative(initiative)
 
     @staticmethod
-    def save_initiative(initiative):
+    def __save_initiative(initiative):
          with open(CONF_FILE,'w') as cf :
             json.dump(initiative, cf)
