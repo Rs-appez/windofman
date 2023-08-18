@@ -12,3 +12,4 @@ class WindowConfig():
             event,values = self.window.read()
             if event ==sg.WIN_CLOSED:
                 break
+        self.window.close()
