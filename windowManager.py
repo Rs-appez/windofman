@@ -9,6 +9,7 @@ class WindowManager():
 
         self.ewmh = EWMH()
         self.windows = []
+        self.ignored = []
         self.current_window = []
     
         self.get_windows()
@@ -47,6 +48,9 @@ class WindowManager():
 
         self.current_window = self.windows[index]
 
+        if self.ignored[index] :
+            return self.__switch(forward)
+
         self.__active_current_window()
 
     def __active_current_window(self):
@@ -56,3 +60,17 @@ class WindowManager():
     def sort_windows(self):
         initiative = ConfManager.get_initiative(self.windows,self.ewmh)
         self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))]['initiative'],reverse=True)
+
+        self.__sort_ignored(initiative)
+
+    def __sort_ignored(self,initiative):
+
+        ignores_sort = []
+
+        for window in self.windows:
+            ignores_sort.append(initiative[get_character_name(self.ewmh.getWmName(window))]['ignore'])
+        
+        self.ignored = ignores_sort
+
+
+
