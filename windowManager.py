@@ -49,7 +49,10 @@ class WindowManager():
         self.current_window = self.windows[index]
 
         if self.ignored[index] :
-            return self.__switch(forward)
+            try :
+                return self.__switch(forward)
+            except RecursionError :
+                return
 
         self.__active_current_window()
 
