@@ -31,8 +31,8 @@ class ConfManager():
         
         for window in windows:
             if (not get_character_name(ewmh.getWmName(window)) in initiative 
-                or type(initiative[get_character_name(ewmh.getWmName(window))]) != int) :
-                    initiative[get_character_name(ewmh.getWmName(window))] = 0
+                or type(initiative[get_character_name(ewmh.getWmName(window))]['initiative']) != int) :
+                    initiative[get_character_name(ewmh.getWmName(window))] = { 'initiative': 0, "ignore" : False}
                       
 
         ConfManager.__save_initiative(initiative)
@@ -42,14 +42,20 @@ class ConfManager():
 
     @staticmethod
     def set_initiative(values):
-
         initiative = ConfManager.get_json()
         for key,value in values.items():
-            try :
-                value = int(value)
-            except ValueError:
-                value = 0
-            initiative[key] = value    
+            if 'Ini_' == key[:4] :
+                try :
+                    value = int(value)
+                except ValueError:
+                    value = 0
+                initiative[key[4:]]['initiative'] = value
+            elif 'Ign_' == key[:4] :
+                try :
+                    value = bool(value)
+                except ValueError:
+                    value = False
+                initiative[key[4:]]['ignore'] = value
 
         ConfManager.__save_initiative(initiative)
 

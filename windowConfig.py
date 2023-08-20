@@ -41,16 +41,19 @@ class WindowConfig():
         initiative = ConfManager.get_json()
         character_names = []
         inputs = []
+        ignore_checkbox = []
         buttons = [
             [sg.Button(button_text="refresh"),sg.Button(button_text="save")]
             ]
         for character in self.active_characters:
             character_names.append([sg.Text(character)])
-            inputs.append([sg.Input(size = 5,key=character,default_text=initiative[character])])
+            inputs.append([sg.Input(size = 5,key='Ini_'+character,default_text=initiative[character]['initiative'])])
+            ignore_checkbox.append([sg.Checkbox('',key='Ign_'+character,default=initiative[character]['ignore'])])
 
         self.layout = [
             [sg.Column(character_names),
             sg.Column(inputs),
+            sg.Column(ignore_checkbox)
             ],
             [sg.HSeparator(),],
             [

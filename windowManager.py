@@ -55,4 +55,4 @@ class WindowManager():
 
     def sort_windows(self):
         initiative = ConfManager.get_initiative(self.windows,self.ewmh)
-        self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))],reverse=True)
+        self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))]['initiative'],reverse=True)
