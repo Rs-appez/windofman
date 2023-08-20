@@ -8,7 +8,6 @@ def main():
     wc = WindowConfig(wm)
     KeyboardManager(wm)
     
-    wm.print_windows_name()
     wc.start()
 
 
