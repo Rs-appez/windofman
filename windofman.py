@@ -1,3 +1,4 @@
+#!./venv/bin/python3
 from keyboardManager import KeyboardManager
 from windowConfig import WindowConfig
 from windowManager import WindowManager
