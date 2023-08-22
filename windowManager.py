@@ -66,8 +66,7 @@ class WindowManager():
     def active_window_by_ch_name(self,ch_name):
         for window in self.windows:
             if f'{ch_name}'.encode() in self.ewmh.getWmName(window):
-                self.current_window = window
-                self.__active_current_window()
+                self.__active_window(window)
                 break
 
     def sort_windows(self):
