@@ -20,6 +20,8 @@ class WindowConfig():
             
             if event[:4] == 'Ign_':
                 self.__save(values)
+            elif event[:4] == 'Win_':
+                self.wm.active_window_by_ch_name(event[4:])
             elif event == 'save':
                 self.__save(values)
             elif event == 'refresh':
@@ -49,7 +51,7 @@ class WindowConfig():
             [sg.Button(button_text="refresh"),sg.Button(button_text="save")]
             ]
         for character in self.active_characters:
-            character_names.append([sg.Text(character,click_submits=True)])
+            character_names.append([sg.Text(text=character,key='Win_'+character,click_submits=True)])
             inputs.append([sg.Input(size = 5,key='Ini_'+character,default_text=initiative[character]['initiative'])])
             ignore_checkbox.append([sg.Checkbox('',key='Ign_'+character,default=initiative[character]['ignore'],change_submits=True)])
 

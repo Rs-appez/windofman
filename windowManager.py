@@ -57,8 +57,18 @@ class WindowManager():
         self.__active_current_window()
 
     def __active_current_window(self):
-        self.ewmh.setActiveWindow(self.current_window)
+        self.__active_window(self.current_window)
+        
+    def __active_window(self,window):
+        self.ewmh.setActiveWindow(window)
         self.ewmh.display.flush()
+
+    def active_window_by_ch_name(self,ch_name):
+        for window in self.windows:
+            if f'{ch_name}'.encode() in self.ewmh.getWmName(window):
+                self.current_window = window
+                self.__active_current_window()
+                break
 
     def sort_windows(self):
         initiative = ConfManager.get_initiative(self.windows,self.ewmh)
