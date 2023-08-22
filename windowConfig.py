@@ -17,7 +17,10 @@ class WindowConfig():
     def start(self):
         while 1 :
             event,values = self.window.read()
-            if event == 'save':
+            
+            if event[:4] == 'Ign_':
+                self.__save(values)
+            elif event == 'save':
                 self.__save(values)
             elif event == 'refresh':
                 self.__refresh()
@@ -46,9 +49,9 @@ class WindowConfig():
             [sg.Button(button_text="refresh"),sg.Button(button_text="save")]
             ]
         for character in self.active_characters:
-            character_names.append([sg.Text(character)])
+            character_names.append([sg.Text(character,click_submits=True)])
             inputs.append([sg.Input(size = 5,key='Ini_'+character,default_text=initiative[character]['initiative'])])
-            ignore_checkbox.append([sg.Checkbox('',key='Ign_'+character,default=initiative[character]['ignore'])])
+            ignore_checkbox.append([sg.Checkbox('',key='Ign_'+character,default=initiative[character]['ignore'],change_submits=True)])
 
         self.layout = [
             [sg.Column(character_names),
