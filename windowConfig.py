@@ -17,17 +17,16 @@ class WindowConfig():
     def start(self):
         while 1 :
             event,values = self.window.read()
-            
-            if event[:4] == 'Ign_':
+
+            if event ==sg.WIN_CLOSED:            
+                break
+            elif event[:4] in ['Ign_','Ini_']:
                 self.__save(values)
             elif event[:4] == 'Win_':
                 self.wm.active_window_by_ch_name(event[4:])
-            elif event == 'save':
-                self.__save(values)
             elif event == 'refresh':
                 self.__refresh()
-            elif event ==sg.WIN_CLOSED:
-                break
+
         self.window.close()
 
     def __create_window(self,location= (None, None)):
@@ -48,11 +47,11 @@ class WindowConfig():
         inputs = [[sg.Text('Initiative')]]
         ignore_checkbox = [[sg.Text("Ignore")]]
         buttons = [
-            [sg.Button(button_text="refresh"),sg.Button(button_text="save")]
+            [sg.Button(button_text="refresh")]
             ]
         for character in self.active_characters:
             character_names.append([sg.Text(text=character,key='Win_'+character,click_submits=True)])
-            inputs.append([sg.Input(size = 5,key='Ini_'+character,default_text=initiative[character]['initiative'])])
+            inputs.append([sg.Input(size = 5,key='Ini_'+character,default_text=initiative[character]['initiative'],change_submits=True)])
             ignore_checkbox.append([sg.Checkbox('',key='Ign_'+character,default=initiative[character]['ignore'],change_submits=True)])
 
         self.layout = [
