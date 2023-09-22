@@ -31,7 +31,7 @@ class WindowConfig():
 
     def __create_window(self,location= (None, None)):
         self.__get_layout()
-        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location)
+        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location,icon="windofman.png")
 
     def __get_active_character(self):
         
