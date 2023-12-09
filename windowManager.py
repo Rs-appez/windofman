@@ -16,8 +16,9 @@ class WindowManager():
 
     def get_windows(self):
         windows = []
+        
         for window in self.ewmh.getClientList():
-            if b'Dofus' in self.ewmh.getWmName(window):
+            if self.ewmh.getWmName(window) is not None and b'Dofus' in self.ewmh.getWmName(window) :
                 windows.append(window)
 
         self.windows = windows
