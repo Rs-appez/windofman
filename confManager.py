@@ -45,6 +45,10 @@ class ConfManager():
     def set_initiative(values):
         initiative = ConfManager.get_json()
         for key,value in values.items():
+
+            if 'Dofus' in key:
+                key = key[:9]
+
             if 'Ini_' == key[:4] :
                 try :
                     value = int(value)
