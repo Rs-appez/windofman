@@ -1,4 +1,4 @@
-evdev==1.6.1
+evdev==1.7.0
 ewmh==0.1.6
 pynput==1.7.6
 PySimpleGUI==5.0.2
