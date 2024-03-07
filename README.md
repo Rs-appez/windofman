@@ -20,6 +20,10 @@ Setup the virtual environement
 
 Set the initative of your characters
 
+You can clic on your  charactere name to directly active the window
+
+### Shortcut
+
 Press **F2** to switch to the next character
 
 Press **F3** to switch to the previous character
