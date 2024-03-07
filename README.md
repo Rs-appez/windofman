@@ -6,11 +6,15 @@ A little tool for ordering and switch between multiple dofus window on linux
 
 Setup the virtual environement
 
-> ./init_venv_windofman.sh
+```
+./init_venv_windofman.sh
+```
 
 ## Start windofman
 
-> ./windofman.py
+```
+./windofman.py
+```
 
 ## Usage
 
