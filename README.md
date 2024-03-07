@@ -1,6 +1,6 @@
 # Windofman
 
-A little tool for manage multiple dofus window on linux
+A little tool for ordering and switch between multiple dofus window on linux
 
 ## Initialization
 
