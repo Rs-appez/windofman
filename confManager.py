@@ -6,27 +6,34 @@ CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
 class ConfManager():
 
-    @staticmethod
-    def __check_conf_file():
-        conf_file = Path(CONF_FILE)
-        if not conf_file.is_file() :
-            with open(CONF_FILE,'x') as cf :
-                cf.write('{}')    
+    # @staticmethod
+    # def __check_conf_file():
+    #     conf_file = Path(CONF_FILE)
+    #     if not conf_file.is_file() :
+    #         with open(CONF_FILE,'x') as cf :
+    #             cf.write('{}')    
                 
     @staticmethod
     def get_json() -> json:
+        content = None
         try :
             with open(CONF_FILE,'r') as cf:
                 content = json.load(cf)
-        except json.JSONDecodeError :
-            content = json.loads('{}')
+        # except json.JSONDecodeError :
+        #     content = json.loads('{}')
+        except FileNotFoundError:
+            with open(CONF_FILE,'x') as cf :
+                cf.write('{}')
+        except Exception as e:
+            print("Error",e)
+        finally:    
+            if not content:
+                content = json.loads('{}')
         return content
 
     @staticmethod
     def get_initiative(windows, ewmh) -> dict:
         
-        ConfManager.__check_conf_file()
-
         initiative = ConfManager.get_json()
         
         for window in windows:
