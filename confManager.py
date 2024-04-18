@@ -4,6 +4,8 @@ from tools import get_character_name
 
 CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
+default_conf = "{}"
+
 class ConfManager():
 
     # @staticmethod
@@ -23,12 +25,12 @@ class ConfManager():
         #     content = json.loads('{}')
         except FileNotFoundError:
             with open(CONF_FILE,'x') as cf :
-                cf.write('{}')
+                cf.write(default_conf)
         except Exception as e:
             print("Error",e)
         finally:    
             if not content:
-                content = json.loads('{}')
+                content = json.loads(default_conf)
         return content
 
     @staticmethod
