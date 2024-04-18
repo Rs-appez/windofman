@@ -4,7 +4,7 @@ from tools import get_character_name
 
 CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
-default_conf = "{}"
+default_conf = '{"Initiatives":{}}'
 
 class ConfManager():
 
@@ -26,9 +26,13 @@ class ConfManager():
 
     @staticmethod
     def get_initiative(windows, ewmh) -> dict:
+
+        try :
+            initiative = ConfManager.get_json()["Initiatives"]
         
-        initiative = ConfManager.get_json()
-        
+        except KeyError:
+            initiative = {}
+
         for window in windows:
             character_name = get_character_name(ewmh.getWmName(window))
             if (character_name not in initiative 
@@ -43,7 +47,7 @@ class ConfManager():
 
     @staticmethod
     def set_initiative(values):
-        initiative = ConfManager.get_json()
+        initiative = ConfManager.get_json()["Initiatives"]
         for key,value in values.items():
 
             if 'Dofus' in key:
@@ -66,5 +70,7 @@ class ConfManager():
 
     @staticmethod
     def __save_initiative(initiative):
-         with open(CONF_FILE,'w') as cf :
-            json.dump(initiative, cf)
+        config = ConfManager.get_json()
+        config['Initiatives'] = initiative
+        with open(CONF_FILE,'w') as cf :
+            json.dump(config, cf)

@@ -42,7 +42,7 @@ class WindowConfig():
 
     def __get_layout(self):
         self.__get_active_character()
-        initiative = ConfManager.get_json()
+        initiative = ConfManager.get_json()["Initiatives"]
         character_names = [[sg.Text("Character")]]
         inputs = [[sg.Text('Initiative')]]
         ignore_checkbox = [[sg.Text("Ignore")]]
