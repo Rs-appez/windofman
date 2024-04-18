@@ -23,7 +23,7 @@ class ConfManager():
         return content
 
     @staticmethod
-    def get_initiative(windows, ewmh) -> dict():
+    def get_initiative(windows, ewmh) -> dict:
         
         ConfManager.__check_conf_file()
 
