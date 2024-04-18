@@ -5,6 +5,7 @@ from tools import get_character_name
 CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
 default_conf = '{"Initiatives":{}}'
+default_ini = {'initiative':0,'ignore':False}
 
 class ConfManager():
 
@@ -37,7 +38,7 @@ class ConfManager():
             character_name = get_character_name(ewmh.getWmName(window))
             if (character_name not in initiative 
                 or not isinstance(initiative[character_name]['initiative'], int)) : 
-                    initiative[character_name] = { 'initiative': 0, "ignore" : False}
+                    initiative[character_name] = default_ini
                       
 
         ConfManager.__save_initiative(initiative)
