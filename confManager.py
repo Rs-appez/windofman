@@ -51,6 +51,8 @@ class ConfManager():
         initiative = ConfManager.get_json()["Initiatives"]
         for key,value in values.items():
 
+            key = ''.join([c for c in key if not c.isdigit()])
+
             if 'Dofus' in key:
                 key = key[:9]
 
