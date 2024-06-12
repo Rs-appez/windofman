@@ -11,10 +11,15 @@ class WindowManager():
         self.windows = []
         self.ignored = []
         self.current_window = []
+        self.on_top = False
     
-        self.get_windows()
+        self.get_data()
 
-    def get_windows(self):
+    def get_data(self):
+        self.__get_windows()
+        self.__get_setting()
+
+    def __get_windows(self):
         windows = []
         
         for window in self.ewmh.getClientList():
@@ -24,6 +29,10 @@ class WindowManager():
         self.windows = windows
         self.sort_windows()
         self.__set_current_window()
+
+    def __get_setting(self):
+        settings = ConfManager.get_settings()
+        self.on_top = settings["on_top"]
 
     def __set_current_window(self): 
         self.current_window = self.windows[0] if self.windows else []

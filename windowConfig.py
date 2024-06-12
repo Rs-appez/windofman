@@ -31,7 +31,11 @@ class WindowConfig():
 
     def __create_window(self,location= (None, None)):
         self.__get_layout()
-        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location,icon="windofman.png")
+        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location,icon="windofman.png",keep_on_top=self.wm.on_top)
+
+
+    def __set_on_top(self, on_top : bool = True):
+        self.window.KeepOnTop = on_top
 
     def __get_active_character(self):
         
@@ -70,7 +74,7 @@ class WindowConfig():
         self.wm.sort_windows()
 
     def __refresh(self):
-        self.wm.get_windows()
+        self.wm.get_data()
         old_location = self.window.CurrentLocation(more_accurate = True)
         self.window.close()
         self.__create_window(location=old_location)

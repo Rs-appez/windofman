@@ -4,8 +4,9 @@ from tools import get_character_name
 
 CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
-default_conf = '{"Initiatives":{}}'
+default_conf = '{"Initiatives":{}, "Settings":{}'
 default_ini = {'initiative':0,'ignore':False}
+default_settings = {'on_top':False}
 
 class ConfManager():
 
@@ -70,10 +71,32 @@ class ConfManager():
                 initiative[key[4:]]['ignore'] = value
 
         ConfManager.__save_initiative(initiative)
+    
+    @staticmethod
+    def get_settings():
+        try :
+            settings = ConfManager.get_json()['Settings']
+
+        except KeyError:
+            settings = default_settings
+            ConfManager.__save_settings(settings)
+        
+        return settings
+    
+    @staticmethod
+    def set_settings(settings):
+        pass
 
     @staticmethod
     def __save_initiative(initiative):
         config = ConfManager.get_json()
         config['Initiatives'] = initiative
+        with open(CONF_FILE,'w') as cf :
+            json.dump(config, cf)
+
+    @staticmethod
+    def __save_settings(settings):
+        config = ConfManager.get_json()
+        config['Settings'] = settings
         with open(CONF_FILE,'w') as cf :
             json.dump(config, cf)
