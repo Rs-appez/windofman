@@ -6,7 +6,7 @@ CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
 default_conf = '{"Initiatives":{}, "Settings":{}'
 default_ini = {'initiative':0,'ignore':False}
-default_settings = {'on_top':False}
+default_settings = {'on_top_settings':False}
 
 class ConfManager():
 
@@ -25,6 +25,9 @@ class ConfManager():
             if not content:
                 content = json.loads(default_conf)
         return content
+
+
+# Initiative methods
 
     @staticmethod
     def get_initiative(windows, ewmh) -> dict:
@@ -71,6 +74,15 @@ class ConfManager():
                 initiative[key[4:]]['ignore'] = value
 
         ConfManager.__save_initiative(initiative)
+
+    @staticmethod
+    def __save_initiative(initiative):
+        config = ConfManager.get_json()
+        config['Initiatives'] = initiative
+        with open(CONF_FILE,'w') as cf :
+            json.dump(config, cf)
+
+# Settings methods
     
     @staticmethod
     def get_settings():
@@ -84,16 +96,13 @@ class ConfManager():
         return settings
     
     @staticmethod
-    def set_settings(settings):
-        pass
+    def set_settings(values):
+        settings = ConfManager.get_json()['Settings']
+        for key,value in values.items():
+            settings[key] = value
 
-    @staticmethod
-    def __save_initiative(initiative):
-        config = ConfManager.get_json()
-        config['Initiatives'] = initiative
-        with open(CONF_FILE,'w') as cf :
-            json.dump(config, cf)
-
+        ConfManager.__save_settings(settings)
+        
     @staticmethod
     def __save_settings(settings):
         config = ConfManager.get_json()

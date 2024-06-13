@@ -32,7 +32,7 @@ class WindowManager():
 
     def __get_setting(self):
         settings = ConfManager.get_settings()
-        self.on_top = settings["on_top"]
+        self.on_top = settings["on_top_settings"]
 
     def __set_current_window(self): 
         self.current_window = self.windows[0] if self.windows else []
