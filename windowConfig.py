@@ -110,7 +110,7 @@ class WindowConfig():
         settings = ConfManager.get_settings()
         
         title = [[sg.Text('Settings', font='Any 11',)]]
-        settings_checkbox = [[sg.Checkbox(text=' Window always on top',key='on_top_settings',default=settings['on_top_settings'],enable_events=True)]]
+        settings_checkbox = [[sg.Checkbox(text=' Windofman always on top',key='on_top_settings',default=settings['on_top_settings'],enable_events=True)]]
         buttons = [[sg.Button(key = 'back_home',button_text='Back')]]
 
         self.layout = [
