@@ -88,6 +88,8 @@ class ConfManager():
     def get_settings():
         try :
             settings = ConfManager.get_json()['Settings']
+            if settings == {}:
+                raise KeyError
 
         except KeyError:
             settings = default_settings
