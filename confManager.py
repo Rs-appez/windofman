@@ -4,7 +4,7 @@ from tools import get_character_name
 
 CONF_FILE = f"{Path( __file__ ).parent.absolute()}/config.json"
 
-default_conf = '{"Initiatives":{}, "Settings":{}'
+default_conf = '{"Initiatives":{}, "Settings":{}}'
 default_ini = {'initiative':0,'ignore':False}
 default_settings = {'on_top_settings':False}
 
