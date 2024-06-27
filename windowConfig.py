@@ -13,13 +13,15 @@ class WindowConfig():
         self.window = None
         self.page = 'home'
 
-        self.__create_window()
+        self.__create_window(location=self.wm.location)
 
     def start(self):
         while 1 :
             event,values = self.window.read()
 
-            if event ==sg.WIN_CLOSED:            
+
+            if event ==sg.WIN_CLOSE_ATTEMPTED_EVENT:            
+                self.__set_location()
                 break
 
             # Home page events
@@ -46,7 +48,7 @@ class WindowConfig():
 
     def __create_window(self,location= (None, None)):
         self.__get_layout()
-        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location,icon="windofman.png",keep_on_top=self.wm.on_top)
+        self.window = sg.Window(title="Windofman", layout=self.layout, margins=(10, 10),location=location,icon="windofman.png",keep_on_top=self.wm.on_top, enable_close_attempted_event=True)
 
     def __save_initative(self,values):
         ConfManager.set_initiative(values)
@@ -59,6 +61,10 @@ class WindowConfig():
 
     def __set_on_top(self, on_top : bool = True):
         self.window.KeepOnTop = on_top
+    
+    def __set_location(self):
+        location = self.window.CurrentLocation(more_accurate = True)
+        self.__save_settings({'location':location})
 
     def __get_active_character(self):
         

@@ -12,6 +12,7 @@ class WindowManager():
         self.ignored = []
         self.current_window = []
         self.on_top = False
+        self.location = (None,None)
     
         self.get_data()
 
@@ -33,6 +34,7 @@ class WindowManager():
     def __get_setting(self):
         settings = ConfManager.get_settings()
         self.on_top = settings["on_top_settings"]
+        self.location = settings["location"] if "location" in settings.keys() else (None,None)
 
     def __set_current_window(self): 
         self.current_window = self.windows[0] if self.windows else []
