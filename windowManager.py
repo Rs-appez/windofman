@@ -82,10 +82,14 @@ class WindowManager():
                 break
 
     def sort_windows(self):
-        initiative = ConfManager.get_initiative(self.windows,self.ewmh)
-        self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))]['initiative'],reverse=True)
+        try :
+            initiative = ConfManager.get_initiative(self.windows,self.ewmh)
+            self.windows = sorted(self.windows, key=lambda w : initiative[get_character_name(self.ewmh.getWmName(w))]['initiative'],reverse=True)
 
-        self.__sort_ignored(initiative)
+            self.__sort_ignored(initiative)
+            
+        except Exception:
+            pass
 
     def __sort_ignored(self,initiative):
 
