@@ -24,7 +24,7 @@ class WindowManager():
         windows = []
         
         for window in self.ewmh.getClientList():
-            if self.ewmh.getWmName(window) is not None and b'Dofus 2.' in self.ewmh.getWmName(window) :
+            if self.ewmh.getWmName(window) is not None and (b'Dofus 2.' in self.ewmh.getWmName(window) or self.ewmh.getWmName(window) == b'Dofus'):
                 windows.append(window)
 
         self.windows = windows
