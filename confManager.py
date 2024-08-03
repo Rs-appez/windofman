@@ -65,7 +65,7 @@ class ConfManager():
                 try :
                     value = int(value)
                 except ValueError:
-                    value = 0
+                    value = initiative[key[4:]]['initiative']
                 initiative[key[4:]]['initiative'] = value
             elif 'Ign_' == key[:4] :
                 try :
