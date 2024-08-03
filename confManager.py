@@ -56,7 +56,7 @@ class ConfManager():
         for key,value in values.items():
 
             if key[4:] not in initiative.keys():
-                key = ''.join([c for c in key if not c.isdigit()])
+                key = ''.join([c for c in key if not c.isdigit()]) # remove added numbers of multiple windows with the same name
 
             if 'Dofus' in key:
                 key = key[:9]
