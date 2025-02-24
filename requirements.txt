@@ -1,4 +1,4 @@
-evdev==1.9.0
+evdev==1.9.1
 ewmh==0.1.6
 pyasn1==0.6.1
 pynput==1.7.7
