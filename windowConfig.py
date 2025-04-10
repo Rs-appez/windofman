@@ -33,7 +33,7 @@ class WindowConfig:
             elif event == "settings":
                 self.page = "settings"
                 self.__switch_page()
-            elif event == "close all window":
+            elif event == "close all windows":
                 self.wm.close_all_windows()
                 self.__switch_page()
 
@@ -102,7 +102,7 @@ class WindowConfig:
         close_all_button = [
             [
                 sg.Button(
-                    button_text="close all window",
+                    button_text="close all windows",
                     button_color=("white", "black"),
                     font=("Helvetica", 10, "bold"),
                 )
