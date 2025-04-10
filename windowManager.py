@@ -86,6 +86,10 @@ class WindowManager:
                 self.__active_window(window)
                 break
 
+    def close_all_windows(self):
+        for window in self.windows:
+            self.ewmh.setCloseWindow(window)
+
     def sort_windows(self):
         try:
             initiative = ConfManager.get_initiative(self.windows, self.ewmh)
