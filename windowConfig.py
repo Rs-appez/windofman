@@ -33,6 +33,9 @@ class WindowConfig:
             elif event == "settings":
                 self.page = "settings"
                 self.__switch_page()
+            elif event == "close all window":
+                self.wm.close_all_windows()
+                self.__switch_page()
 
             # Settings page events
             elif event == "back_home":
@@ -96,14 +99,21 @@ class WindowConfig:
         character_names = [[sg.Text("Character")]]
         inputs = [[sg.Text("Initiative")]]
         ignore_checkbox = [[sg.Text("Ignore")]]
+        close_all_button = [
+            [
+                sg.Button(
+                    button_text="close all window",
+                    button_color=("white", "black"),
+                    font=("Helvetica", 10, "bold"),
+                )
+            ]
+        ]
         buttons = [
-            [sg.Button(button_text="refresh"),
-             sg.Button(button_text="settings")]
+            [sg.Button(button_text="refresh"), sg.Button(button_text="settings")]
         ]
         for character in self.active_characters:
             character_names.append(
-                [sg.Text(text=character, key="Win_" +
-                         character, enable_events=True)]
+                [sg.Text(text=character, key="Win_" + character, enable_events=True)]
             )
             inputs.append(
                 [
@@ -127,8 +137,8 @@ class WindowConfig:
             )
 
         self.layout = [
-            [sg.Column(character_names), sg.Column(
-                inputs), sg.Column(ignore_checkbox)],
+            [sg.Column(close_all_button, justification="right")],
+            [sg.Column(character_names), sg.Column(inputs), sg.Column(ignore_checkbox)],
             [
                 sg.HSeparator(),
             ],
