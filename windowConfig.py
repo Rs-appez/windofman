@@ -35,7 +35,6 @@ class WindowConfig:
                 self.__switch_page()
             elif event == "close all windows":
                 self.wm.close_all_windows()
-                self.__switch_page()
 
             # Settings page events
             elif event == "back_home":
