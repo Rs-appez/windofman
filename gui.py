@@ -2,6 +2,7 @@ import tkinter as tk
 from windowManager import WindowManager
 
 bg_color = "#1f1f28"
+text_color = "#dcd7ba"
 
 
 class GUIApp(tk.Tk):
@@ -67,7 +68,7 @@ class HomePage(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.configure(bg=bg_color)
+        self.configure(bg=self.parent.cget("bg"))
         self.create_widgets()
 
     def create_widgets(self):
@@ -84,7 +85,7 @@ class SettingsPage(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.configure(bg=bg_color)
+        self.configure(bg=self.parent.cget("bg"))
 
         # settings
         self.on_top_var = tk.BooleanVar(value=self.parent.wm.on_top)
