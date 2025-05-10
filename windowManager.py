@@ -3,10 +3,21 @@ from ewmh import EWMH
 from confManager import ConfManager
 from tools import get_character_name
 
+ewmh = EWMH()
+
+
+class DofusWindow:
+    def __init__(self, window):
+        self.window = window
+        self.name = get_character_name(ewmh.getWmName(window))
+
+    def __str__(self):
+        return f"{self.name}"
+
 
 class WindowManager:
     def __init__(self):
-        self.ewmh = EWMH()
+        self.ewmh = ewmh
         self.windows = []
         self.ignored = []
         self.current_window = []
@@ -30,11 +41,11 @@ class WindowManager:
         windows = []
 
         for window in self.ewmh.getClientList():
-            if self.ewmh.getWmName(window) is not None and (
-                b"Dofus 2." in self.ewmh.getWmName(window)
-                or self.ewmh.getWmName(window) == b"Dofus"
+            window_name = self.ewmh.getWmName(window)
+            if window_name is not None and (
+                b"Dofus 3." in window_name or window_name == b"Dofus"
             ):
-                windows.append(window)
+                windows.append(DofusWindow(window))
 
         self.windows = windows
         self.sort_windows()
@@ -44,8 +55,7 @@ class WindowManager:
         settings = ConfManager.get_settings()
         self.on_top = settings["on_top_settings"]
         self.location = (
-            settings["location"] if "location" in settings.keys() else (
-                None, None)
+            settings["location"] if "location" in settings.keys() else (None, None)
         )
 
     def __set_current_window(self):
@@ -53,7 +63,7 @@ class WindowManager:
 
     def print_windows_name(self):
         for window in self.windows:
-            print(get_character_name(self.ewmh.getWmName(window)))
+            print(window.name)
 
     def next(self):
         self.__switch(1)
@@ -83,26 +93,26 @@ class WindowManager:
     def __active_current_window(self):
         self.__active_window(self.current_window)
 
-    def __active_window(self, window):
-        self.ewmh.setActiveWindow(window)
+    def __active_window(self, window: DofusWindow):
+        self.ewmh.setActiveWindow(window.window)
         self.ewmh.display.flush()
 
     def active_window_by_ch_name(self, ch_name):
         for window in self.windows:
-            if f"{ch_name}".encode() in self.ewmh.getWmName(window):
+            if f"{ch_name}".encode() in window.name:
                 self.__active_window(window)
                 break
 
     def close_all_windows(self):
         for window in self.windows:
-            self.ewmh.setCloseWindow(window)
+            self.ewmh.setCloseWindow(window.window)
 
     def sort_windows(self):
         try:
-            initiative = ConfManager.get_initiative(self.windows, self.ewmh)
+            initiative = ConfManager.get_initiative(self.windows)
             self.windows = sorted(
                 self.windows,
-                key=lambda w: initiative[get_character_name(self.ewmh.getWmName(w))][
+                key=lambda w: initiative[w.name][
                     "initiative"
                 ],
                 reverse=True,
@@ -110,7 +120,8 @@ class WindowManager:
 
             self.__sort_ignored(initiative)
 
-        except Exception:
+        except Exception as e:
+            print(f"Error sorting windows : {e}")
             pass
 
     def __sort_ignored(self, initiative):
@@ -118,8 +129,7 @@ class WindowManager:
 
         for window in self.windows:
             ignores_sort.append(
-                initiative[get_character_name(
-                    self.ewmh.getWmName(window))]["ignore"]
+                initiative[window.name]["ignore"]
             )
 
         self.ignored = ignores_sort
