@@ -22,7 +22,7 @@ class GUIApp(tk.Tk):
 
         self.load_config()
 
-        image = tk.PhotoImage(file="windofman.png")
+        image = tk.PhotoImage("windofman.png")
         self.wm_iconphoto(True, image)
 
         self.frames = {}
