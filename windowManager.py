@@ -19,6 +19,13 @@ class WindowManager:
         self.__get_windows()
         self.__get_setting()
 
+    def save_settings(self):
+        settings = {
+            "on_top_settings": self.on_top,
+            "location": self.location,
+        }
+        ConfManager.set_settings(settings)
+
     def __get_windows(self):
         windows = []
 
