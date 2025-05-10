@@ -11,6 +11,7 @@ class GUIApp(tk.Tk):
 
         self.title("Windofman")
         self.configure(bg=bg_color)
+        self.protocol("WM_DELETE_WINDOW", self.__on_close)
 
         localization = self.wm.location
         self.geometry(
@@ -48,6 +49,18 @@ class GUIApp(tk.Tk):
             self.frames[page].tkraise()
         except KeyError:
             print(f"Page {page} not found.")
+
+    def __on_close(self):
+        self.__save_location()
+        self.destroy()
+
+    def __save_location(self):
+        location = self.geometry().split("+")[1:]
+        if len(location) == 2:
+            self.wm.location = (int(location[0]), int(location[1]))
+        else:
+            self.wm.location = (None, None)
+        self.wm.save_settings()
 
 
 class HomePage(tk.Frame):
