@@ -42,7 +42,6 @@ class GUIApp(tk.Tk):
 
     def load_config(self):
         self.attributes("-topmost", self.wm.on_top)
-        print(f"Window on top: {self.wm.on_top}")
 
     def go_page(self, page):
         try:
