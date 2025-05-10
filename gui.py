@@ -1,8 +1,8 @@
 import tkinter as tk
 from windowManager import WindowManager
 
-bg_color = "#1f1f28"
-text_color = "#dcd7ba"
+DARK_COLOR = "#1f1f28"
+LIGHT_COLOR = "#dcd7ba"
 
 
 class GUIApp(tk.Tk):
@@ -11,7 +11,7 @@ class GUIApp(tk.Tk):
         self.wm = wm
 
         self.title("Windofman")
-        self.configure(bg=bg_color)
+        self.configure(bg=DARK_COLOR)
         self.protocol("WM_DELETE_WINDOW", self.__on_close)
 
         localization = self.wm.location
@@ -72,13 +72,19 @@ class HomePage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.refresh_button = tk.Button(self, text="Refresh")
-        self.refresh_button.pack(pady=10)
+        self.refresh_button = tk.Button(
+            self, text="Refresh", bg=LIGHT_COLOR, fg=DARK_COLOR
+        )
+        self.refresh_button.grid(row=2, column=0, padx=10, pady=10)
 
         self.settings_button = tk.Button(
-            self, text="Settings", command=lambda: self.parent.go_page(SettingsPage)
+            self,
+            text="Settings",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(SettingsPage),
         )
-        self.settings_button.pack(pady=10)
+        self.settings_button.grid(row=2, column=1, padx=10, pady=10)
 
 
 class SettingsPage(tk.Frame):
@@ -96,22 +102,30 @@ class SettingsPage(tk.Frame):
         self.on_top_checkbutton = tk.Checkbutton(
             self,
             text="Always on top",
-            bg=bg_color,
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
             variable=self.on_top_var,
         )
-        self.on_top_checkbutton.pack(pady=10)
+        self.on_top_checkbutton.grid(row=0, column=0, padx=10, pady=10)
 
+        btn_row = self.grid_size()[1]
         self.back_button = tk.Button(
-            self, text="Back to Home", command=lambda: self.parent.go_page(HomePage)
+            self,
+            text="Back to Home",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(HomePage),
         )
-        self.back_button.pack(pady=10)
+        self.back_button.grid(row=btn_row, column=0, padx=10, pady=10)
 
         self.save_button = tk.Button(
             self,
             text="Save Settings",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
             command=self.__save_settings,
         )
-        self.save_button.pack(pady=10)
+        self.save_button.grid(row=btn_row, column=1, padx=10, pady=10)
 
     def __save_settings(self):
         self.parent.wm.on_top = self.on_top_var.get()
