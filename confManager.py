@@ -29,7 +29,7 @@ class ConfManager:
     # Initiative methods
 
     @staticmethod
-    def get_initiative(windows, ewmh) -> dict:
+    def get_initiative(windows) -> dict:
         try:
             initiative = ConfManager.get_json()["Initiatives"]
 
@@ -37,7 +37,7 @@ class ConfManager:
             initiative = {}
 
         for window in windows:
-            character_name = get_character_name(ewmh.getWmName(window))
+            character_name = window.name
             if character_name not in initiative or not isinstance(
                 initiative[character_name]["initiative"], int
             ):
