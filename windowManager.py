@@ -11,6 +11,9 @@ class DofusWindow:
         self.window = window
         self.name = get_character_name(ewmh.getWmName(window))
 
+        self.initiative = 0
+        self.ignore = False
+
     def __str__(self):
         return f"{self.name}"
 
@@ -48,6 +51,7 @@ class WindowManager:
                 windows.append(DofusWindow(window))
 
         self.windows = windows
+
         self.sort_windows()
         self.__set_current_window()
 
@@ -91,45 +95,40 @@ class WindowManager:
         self.__active_current_window()
 
     def __active_current_window(self):
-        self.__active_window(self.current_window)
+        self.active_window(self.current_window)
 
-    def __active_window(self, window: DofusWindow):
+    def active_window(self, window: DofusWindow):
         self.ewmh.setActiveWindow(window.window)
         self.ewmh.display.flush()
-
-    def active_window_by_ch_name(self, ch_name):
-        for window in self.windows:
-            if f"{ch_name}".encode() in window.name:
-                self.__active_window(window)
-                break
 
     def close_all_windows(self):
         for window in self.windows:
             self.ewmh.setCloseWindow(window.window)
 
     def sort_windows(self):
+        self.__get_initiatives()
+        self.windows = sorted(
+            self.windows,
+            key=lambda w: w.initiative,
+            reverse=True,
+        )
+
+    def __get_initiatives(self):
         try:
             initiative = ConfManager.get_initiative(self.windows)
-            self.windows = sorted(
-                self.windows,
-                key=lambda w: initiative[w.name][
-                    "initiative"
-                ],
-                reverse=True,
-            )
+            for window in self.windows:
+                if window.name in initiative.keys():
+                    window.initiative = initiative[window.name]["initiative"]
+                    window.ignore = initiative[window.name]["ignore"]
 
             self.__sort_ignored(initiative)
-
         except Exception as e:
-            print(f"Error sorting windows : {e}")
-            pass
+            print(f"Error getting initiative : {e}")
 
     def __sort_ignored(self, initiative):
         ignores_sort = []
 
         for window in self.windows:
-            ignores_sort.append(
-                initiative[window.name]["ignore"]
-            )
+            ignores_sort.append(initiative[window.name]["ignore"])
 
         self.ignored = ignores_sort
