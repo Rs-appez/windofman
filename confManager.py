@@ -1,6 +1,5 @@
 from pathlib import Path
 import json
-from tools import get_character_name
 
 CONF_FILE = f"{Path(__file__).parent.absolute()}/config.json"
 
