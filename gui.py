@@ -72,6 +72,21 @@ class HomePage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        for character in self.parent.wm.windows:
+            character_name = character.name
+            row = self.parent.wm.windows.index(character)
+            label = tk.Label(
+                self,
+                text=character_name,
+                fg=LIGHT_COLOR,
+                bg=DARK_COLOR,
+            )
+            label.bind(
+                "<Button-1>", lambda e, c=character: self.parent.wm.active_window(c)
+            )
+            label.grid(row=row, column=0, padx=10, pady=10)
+
+        btn_row = self.grid_size()[1]
         self.refresh_button = tk.Button(
             self,
             text="Refresh",
@@ -79,7 +94,7 @@ class HomePage(tk.Frame):
             fg=DARK_COLOR,
             command=self.__refresh_windows,
         )
-        self.refresh_button.grid(row=2, column=0, padx=10, pady=10)
+        self.refresh_button.grid(row=btn_row, column=0, padx=10, pady=10)
 
         self.settings_button = tk.Button(
             self,
@@ -88,7 +103,7 @@ class HomePage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(SettingsPage),
         )
-        self.settings_button.grid(row=2, column=1, padx=10, pady=10)
+        self.settings_button.grid(row=btn_row, column=1, padx=10, pady=10)
 
     def __refresh_windows(self):
         self.parent.wm.get_data()
