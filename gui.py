@@ -16,10 +16,11 @@ class GUIApp(tk.Tk):
 
         localization = self.wm.location
         self.geometry(
-            "300x200" + f"+{localization[0]}+{localization[1]}"
+            f"+{localization[0]}+{localization[1]}"
             if localization[0] and localization[1]
             else ""
         )
+        self.minsize(100, 100)
         self.resizable(False, False)
 
         self.load_config()
@@ -56,6 +57,7 @@ class GUIApp(tk.Tk):
     def __make_frame(self, frame_class):
         frame = frame_class(self)
         frame.grid(row=0, column=0, sticky="nsew")
+        frame.grid_propagate(True)
         self.frames[frame_class] = frame
 
     def __on_close(self):
