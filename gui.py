@@ -37,10 +37,7 @@ class GUIApp(tk.Tk):
     def __init_frame(self):
         frame_classes = (HomePage, SettingsPage)
         for F in frame_classes:
-            frame = F(self)
-            frame.grid(row=0, column=0, sticky="nsew")
-
-            self.frames[F] = frame
+            self.__make_frame(F)
 
     def load_config(self):
         self.attributes("-topmost", self.wm.on_top)
@@ -50,6 +47,16 @@ class GUIApp(tk.Tk):
             self.frames[page].tkraise()
         except KeyError:
             print(f"Page {page} not found.")
+
+    def reload_frame(self, frame_class):
+        if frame_class in self.frames:
+            self.frames[frame_class].destroy()
+            self.__make_frame(frame_class)
+
+    def __make_frame(self, frame_class):
+        frame = frame_class(self)
+        frame.grid(row=0, column=0, sticky="nsew")
+        self.frames[frame_class] = frame
 
     def __on_close(self):
         self.__save_location()
@@ -107,6 +114,7 @@ class HomePage(tk.Frame):
 
     def __refresh_windows(self):
         self.parent.wm.get_data()
+        self.parent.reload_frame(HomePage)
 
 
 class SettingsPage(tk.Frame):
