@@ -39,6 +39,11 @@ class DofusWindow:
     def set_name(self, name):
         self.name = name
 
+    def load_initiative(self):
+        initiative = ConfManager.get_initiative(self.name)
+        self.initiative = initiative[self.name]["initiative"]
+        self.ignore = initiative[self.name]["ignore"]
+
 
 class WindowManager:
     def __init__(self):
@@ -141,22 +146,16 @@ class WindowManager:
         )
 
     def __get_initiatives(self):
-        try:
-            initiative = ConfManager.get_initiative(self.windows)
-            for window in self.windows:
-                if window.name in initiative.keys():
-                    window.initiative = initiative[window.name]["initiative"]
-                    window.ignore = initiative[window.name]["ignore"]
+        for window in self.windows:
+            window.load_initiative()
 
-            self.__sort_ignored(initiative)
-        except Exception as e:
-            print(f"Error getting initiative : {e}")
+        self.__sort_ignored()
 
-    def __sort_ignored(self, initiative):
+    def __sort_ignored(self):
         ignores_sort = []
 
         for window in self.windows:
-            ignores_sort.append(initiative[window.name]["ignore"])
+            ignores_sort.append(window.ignore)
 
         self.ignored = ignores_sort
 

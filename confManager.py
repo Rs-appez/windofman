@@ -28,19 +28,18 @@ class ConfManager:
     # Initiative methods
 
     @staticmethod
-    def get_initiative(windows) -> dict:
+    def get_initiative(character: str) -> dict:
         try:
             initiative = ConfManager.get_json()["Initiatives"]
 
         except KeyError:
             initiative = {}
 
-        for window in windows:
-            character_name = window.name
-            if character_name not in initiative or not isinstance(
-                initiative[character_name]["initiative"], int
-            ):
-                initiative[character_name] = default_ini
+        character_name = character
+        if character_name not in initiative or not isinstance(
+            initiative[character_name]["initiative"], int
+        ):
+            initiative[character_name] = default_ini
 
         ConfManager.__save_initiative(initiative)
 
