@@ -1,5 +1,5 @@
 import tkinter as tk
-from windowManager import WindowManager
+from windowManager import WindowManager, DofusWindow
 
 DARK_COLOR = "#1f1f28"
 LIGHT_COLOR = "#dcd7ba"
@@ -81,8 +81,7 @@ class HomePage(tk.Frame):
         self.configure(bg=self.parent.cget("bg"))
 
         # Initiatives
-        self.initiatives = {}
-        self.ignored = {}
+        self.datas = {}
 
         self.create_widgets()
 
@@ -114,6 +113,7 @@ class HomePage(tk.Frame):
         # Characters
         for character in self.parent.wm.windows:
             character_name = character.name
+            self.datas[character_name] = {}
             row = self.parent.wm.windows.index(character) + 2
 
             # Name
@@ -130,11 +130,9 @@ class HomePage(tk.Frame):
             initiative_var = tk.StringVar(value=str(character.initiative))
             initiative_var.trace(
                 "w",
-                lambda *args, char_name=character_name: self.__on_initiative_change(
-                    character_name
-                ),
+                lambda *args, c=character: self.__save_initiatives(c),
             )
-            self.initiatives[character_name] = initiative_var
+            self.datas[character_name]["ini"] = initiative_var
             initiative = tk.Entry(
                 self,
                 textvariable=initiative_var,
@@ -148,11 +146,9 @@ class HomePage(tk.Frame):
             ignore_var = tk.BooleanVar(value=character.ignore)
             ignore_var.trace(
                 "w",
-                lambda *args, char_name=character_name: self.__on_ignore_change(
-                    char_name
-                ),
+                lambda *args, c=character: self.__save_initiatives(c),
             )
-            self.ignored[character_name] = ignore_var
+            self.datas[character_name]["ign"] = ignore_var
             ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
@@ -211,16 +207,9 @@ class HomePage(tk.Frame):
         self.parent.wm.get_data()
         self.parent.reload_frame(HomePage)
 
-    def __on_initiative_change(self, char_name):
-        ini = self.initiatives[char_name].get()
-        self.__save_initiatives({f"Ini_{char_name}": ini})
-
-    def __on_ignore_change(self, char_name):
-        ignore = self.ignored[char_name].get()
-        self.__save_initiatives({f"Ign_{char_name}": ignore})
-
-    def __save_initiatives(self, initiatives):
-        self.parent.wm.save_initiative(initiatives)
+    def __save_initiatives(self, character: DofusWindow):
+        data = self.datas[character.name]
+        character.set_initiative(initiative=data["ini"].get(), ignore=data["ign"].get())
 
     def __link_window(self, window):
         self.parent.wm.window_to_link = window
