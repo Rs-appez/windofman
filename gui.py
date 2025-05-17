@@ -123,7 +123,7 @@ class HomePage(tk.Frame):
                 bg=DARK_COLOR,
             )
             label.bind(
-                "<Button-1>", lambda e, c=character: self.parent.wm.active_window(c)
+                "<Button-1>", lambda e, c=character: c.activate()
             )
             label.grid(row=row, column=0, padx=10, pady=10)
 
@@ -310,6 +310,17 @@ class LinkPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+
+        input = tk.StringVar()
+        input_field = tk.Entry(
+            self,
+            textvariable=input,
+            width=30,
+            bg=DARK_COLOR,
+            fg=LIGHT_COLOR,
+        )
+        input_field.grid(row=0, column=0, padx=10, pady=10)
+
         btn_row = self.grid_size()[1]
         self.back_button = tk.Button(
             self,
