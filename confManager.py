@@ -26,7 +26,7 @@ class ConfManager:
         return content
 
     @staticmethod
-    def get_characters():
+    def get_characters() -> list:
         try:
             characters = ConfManager.get_json()["Initiatives"]
 
