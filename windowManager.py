@@ -85,6 +85,9 @@ class WindowManager:
         for window in self.windows:
             window.save_initiative()
 
+    def get_alls_characters_names(self) -> list:
+        return [name for name in ConfManager.get_characters() if " " not in name]
+
     def __get_windows(self):
         windows = []
         old_windows = [w.window for w in self.windows]
