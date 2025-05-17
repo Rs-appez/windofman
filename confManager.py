@@ -49,25 +49,30 @@ class ConfManager:
     def set_initiative(values):
         initiative = ConfManager.get_json()["Initiatives"]
         for key, value in values.items():
-            if key[4:] not in initiative.keys():
+            if key not in initiative.keys():
                 # remove added numbers of multiple windows with the same name
                 key = "".join([c for c in key if not c.isdigit()])
 
             if "Dofus" in key:
                 key = key[:9]
 
-            if "Ini_" == key[:4]:
-                try:
-                    value = int(value)
-                except ValueError:
-                    value = initiative[key[4:]]["initiative"]
-                initiative[key[4:]]["initiative"] = value
-            elif "Ign_" == key[:4]:
-                try:
-                    value = bool(value)
-                except ValueError:
-                    value = False
-                initiative[key[4:]]["ignore"] = value
+            for k, v in value.items():
+                match k:
+                    case "initiative":
+                        try:
+                            v = int(v)
+                        except:
+                            v = 0
+
+                        initiative[key]["initiative"] = v
+                    case "ignore":
+                        try:
+                            v = bool(v)
+                        except:
+                            v = False
+                        initiative[key]["ignore"] = v
+                    case _:
+                        print(f"Unknown key: {k}")
 
         ConfManager.__save_initiative(initiative)
 
