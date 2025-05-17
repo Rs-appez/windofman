@@ -38,6 +38,7 @@ class DofusWindow:
 
     def set_name(self, name):
         self.name = name
+        self.load_initiative()
 
     def load_initiative(self):
         initiative = ConfManager.get_initiative(self.name)
