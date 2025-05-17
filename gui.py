@@ -51,8 +51,9 @@ class GUIApp(tk.Tk):
 
     def reload_frame(self, frame_class):
         if frame_class in self.frames:
-            self.frames[frame_class].destroy()
+            old = self.frames[frame_class]
             self.__make_frame(frame_class)
+            old.destroy()
 
     def __make_frame(self, frame_class):
         frame = frame_class(self)
