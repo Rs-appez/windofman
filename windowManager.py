@@ -87,13 +87,17 @@ class WindowManager:
 
     def __get_windows(self):
         windows = []
+        old_windows = [w.window for w in self.windows]
 
         for window in self.ewmh.getClientList():
             window_name = self.ewmh.getWmName(window)
             if window_name is not None and (
                 b"Dofus 3." in window_name or window_name == b"Dofus"
             ):
-                windows.append(DofusWindow(window))
+                if window in old_windows:
+                    windows.append([w for w in self.windows if w.window == window][0])
+                else:
+                    windows.append(DofusWindow(window))
 
         self.windows = windows
 
