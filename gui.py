@@ -81,9 +81,28 @@ class HomePage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        # Label
+        label_character = tk.Label(
+            self, text="Character", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        label_character.grid(row=0, column=0, padx=10, pady=10)
+
+        label_initiative = tk.Label(
+            self, text="Initiative", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        label_initiative.grid(row=0, column=1, padx=10, pady=10)
+
+        label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_ignore.grid(row=0, column=2, padx=10, pady=10)
+
+        # Separator
+        separator = tk.Frame(self, bg=LIGHT_COLOR, height=2)
+        separator.grid(row=1, column=0, columnspan=3, sticky="ew", padx=10, pady=5)
+
+        # Characters
         for character in self.parent.wm.windows:
             character_name = character.name
-            row = self.parent.wm.windows.index(character)
+            row = self.parent.wm.windows.index(character) + 2
             label = tk.Label(
                 self,
                 text=character_name,
@@ -95,6 +114,14 @@ class HomePage(tk.Frame):
             )
             label.grid(row=row, column=0, padx=10, pady=10)
 
+        # Separator
+        separator_row = self.grid_size()[1]
+        separator = tk.Frame(self, bg=LIGHT_COLOR, height=2)
+        separator.grid(
+            row=separator_row, column=0, columnspan=3, sticky="ew", padx=10, pady=5
+        )
+
+        # Buttons
         btn_row = self.grid_size()[1]
         self.refresh_button = tk.Button(
             self,
