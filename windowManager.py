@@ -40,6 +40,9 @@ class WindowManager:
         }
         ConfManager.set_settings(settings)
 
+    def save_initiative(self, values):
+        ConfManager.set_initiative(values)
+
     def __get_windows(self):
         windows = []
 
