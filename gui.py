@@ -36,7 +36,7 @@ class GUIApp(tk.Tk):
         self.mainloop()
 
     def __init_frame(self):
-        frame_classes = (HomePage, SettingsPage)
+        frame_classes = (HomePage, SettingsPage, ActionPage)
         for F in frame_classes:
             self.__make_frame(F)
 
@@ -105,6 +105,15 @@ class HomePage(tk.Frame):
         )
         self.refresh_button.grid(row=btn_row, column=0, padx=10, pady=10)
 
+        self.action_button = tk.Button(
+            self,
+            text="Actions",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(ActionPage),
+        )
+        self.action_button.grid(row=btn_row, column=1, padx=10, pady=10)
+
         self.settings_button = tk.Button(
             self,
             text="Settings",
@@ -112,7 +121,7 @@ class HomePage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(SettingsPage),
         )
-        self.settings_button.grid(row=btn_row, column=1, padx=10, pady=10)
+        self.settings_button.grid(row=btn_row, column=2, padx=10, pady=10)
 
     def __refresh_windows(self):
         self.parent.wm.get_data()
@@ -164,3 +173,34 @@ class SettingsPage(tk.Frame):
 
         self.parent.wm.save_settings()
         self.parent.load_config()
+
+
+class ActionPage(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.configure(bg=self.parent.cget("bg"))
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.close_all_button = tk.Button(
+            self,
+            text="Close all windows",
+            background=LIGHT_COLOR,
+            foreground=DARK_COLOR,
+            command=self.__close_all_windows,
+        )
+        self.close_all_button.grid(row=0, column=0, padx=10, pady=10)
+
+        btn_row = self.grid_size()[1]
+        self.back_button = tk.Button(
+            self,
+            text="Back to Home",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(HomePage),
+        )
+        self.back_button.grid(row=btn_row, column=0, padx=10, pady=10)
+
+    def __close_all_windows(self):
+        self.parent.wm.close_all_windows()
