@@ -25,6 +25,17 @@ class ConfManager:
                 content = json.loads(default_conf)
         return content
 
+    @staticmethod
+    def get_characters():
+        try:
+            characters = ConfManager.get_json()["Initiatives"]
+
+        except KeyError:
+            characters = {}
+            ConfManager.__save_initiative(characters)
+
+        return characters.keys()
+
     # Initiative methods
 
     @staticmethod
