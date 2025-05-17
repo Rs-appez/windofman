@@ -122,9 +122,7 @@ class HomePage(tk.Frame):
                 fg=LIGHT_COLOR,
                 bg=DARK_COLOR,
             )
-            label.bind(
-                "<Button-1>", lambda e, c=character: c.activate()
-            )
+            label.bind("<Button-1>", lambda e, c=character: c.activate())
             label.grid(row=row, column=0, padx=10, pady=10)
 
             # Initiative
@@ -163,7 +161,7 @@ class HomePage(tk.Frame):
                 text="Link",
                 bg=DARK_COLOR,
                 fg=LIGHT_COLOR,
-                command=lambda c=character: self.parent.go_page(LinkPage),
+                command=lambda c=character: self.__link_window(c),
             )
             link_button.grid(row=row, column=3, padx=10, pady=10)
 
@@ -222,6 +220,10 @@ class HomePage(tk.Frame):
 
     def __save_initiatives(self, initiatives):
         self.parent.wm.save_initiative(initiatives)
+
+    def __link_window(self, window):
+        self.parent.wm.window_to_link = window
+        self.parent.go_page(LinkPage)
 
 
 class SettingsPage(tk.Frame):
@@ -307,14 +309,15 @@ class LinkPage(tk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
+
+        self.input = tk.StringVar()
+
         self.create_widgets()
 
     def create_widgets(self):
-
-        input = tk.StringVar()
         input_field = tk.Entry(
             self,
-            textvariable=input,
+            textvariable=self.input,
             width=30,
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
@@ -336,5 +339,12 @@ class LinkPage(tk.Frame):
             text="Validate",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
+            command=self.__set_name,
         )
         self.link_button.grid(row=btn_row, column=1, padx=10, pady=10)
+
+    def __set_name(self):
+        name = self.input.get()
+        if name:
+            self.parent.wm.set_name_to_link(name)
+            self.parent.reload_frame(HomePage)
