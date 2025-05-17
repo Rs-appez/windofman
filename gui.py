@@ -36,7 +36,7 @@ class GUIApp(tk.Tk):
         self.mainloop()
 
     def __init_frame(self):
-        frame_classes = (HomePage, SettingsPage, ActionPage)
+        frame_classes = (HomePage, SettingsPage, ActionPage, LinkPage)
         for F in frame_classes:
             self.__make_frame(F)
 
@@ -100,9 +100,15 @@ class HomePage(tk.Frame):
         label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
         label_ignore.grid(row=0, column=2, padx=10, pady=10)
 
+        label_link = tk.Label(self, text="Link", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_link.grid(row=0, column=3, padx=10, pady=10)
+
         # Separator
         separator = tk.Frame(self, bg=LIGHT_COLOR, height=2)
-        separator.grid(row=1, column=0, columnspan=3, sticky="ew", padx=10, pady=5)
+        separator_span = self.grid_size()[0]
+        separator.grid(
+            row=1, column=0, columnspan=separator_span, sticky="ew", padx=10, pady=5
+        )
 
         # Characters
         for character in self.parent.wm.windows:
@@ -151,11 +157,26 @@ class HomePage(tk.Frame):
             ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
+            # Link button
+            link_button = tk.Button(
+                self,
+                text="Link",
+                bg=DARK_COLOR,
+                fg=LIGHT_COLOR,
+                command=lambda c=character: self.parent.go_page(LinkPage),
+            )
+            link_button.grid(row=row, column=3, padx=10, pady=10)
+
         # Separator
         separator_row = self.grid_size()[1]
         separator = tk.Frame(self, bg=LIGHT_COLOR, height=2)
         separator.grid(
-            row=separator_row, column=0, columnspan=3, sticky="ew", padx=10, pady=5
+            row=separator_row,
+            column=0,
+            columnspan=separator_span,
+            sticky="ew",
+            padx=10,
+            pady=5,
         )
 
         # Buttons
@@ -279,3 +300,30 @@ class ActionPage(tk.Frame):
 
     def __close_all_windows(self):
         self.parent.wm.close_all_windows()
+
+
+class LinkPage(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.configure(bg=self.parent.cget("bg"))
+        self.create_widgets()
+
+    def create_widgets(self):
+        btn_row = self.grid_size()[1]
+        self.back_button = tk.Button(
+            self,
+            text="Back",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(HomePage),
+        )
+        self.back_button.grid(row=btn_row, column=0, padx=10, pady=10)
+
+        self.link_button = tk.Button(
+            self,
+            text="Validate",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+        )
+        self.link_button.grid(row=btn_row, column=1, padx=10, pady=10)
