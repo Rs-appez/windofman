@@ -180,7 +180,6 @@ class HomePage(tk.Frame):
         self.__save_initiatives({f"Ini_{char_name}": ini})
 
     def __save_initiatives(self, initiatives):
-        print(f"Initiative for {initiatives} changed.")
         self.parent.wm.save_initiative(initiatives)
 
 
