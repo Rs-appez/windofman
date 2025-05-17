@@ -133,7 +133,7 @@ class HomePage(tk.Frame):
                 fg=LIGHT_COLOR,
             )
             initiative.grid(row=row, column=1, padx=10, pady=10)
-            self.initiatives[f"Ini_{character_name}"] = initiative_var
+            self.initiatives[character_name] = initiative_var
 
         # Separator
         separator_row = self.grid_size()[1]
@@ -176,7 +176,7 @@ class HomePage(tk.Frame):
         self.parent.reload_frame(HomePage)
 
     def __on_initiative_change(self, char_name):
-        ini = self.initiatives[f"Ini_{char_name}"].get()
+        ini = self.initiatives[char_name].get()
         self.__save_initiatives({f"Ini_{char_name}": ini})
 
     def __save_initiatives(self, initiatives):
