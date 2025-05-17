@@ -78,6 +78,10 @@ class HomePage(tk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
+
+        # Initiatives
+        self.initiatives = {}
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -113,6 +117,23 @@ class HomePage(tk.Frame):
                 "<Button-1>", lambda e, c=character: self.parent.wm.active_window(c)
             )
             label.grid(row=row, column=0, padx=10, pady=10)
+
+            initiative_var = tk.StringVar(value=str(character.initiative))
+            initiative_var.trace(
+                "w",
+                lambda *args, char_name=character_name: self.__on_initiative_change(
+                    character_name
+                ),
+            )
+            initiative = tk.Entry(
+                self,
+                textvariable=initiative_var,
+                width=10,
+                bg=DARK_COLOR,
+                fg=LIGHT_COLOR,
+            )
+            initiative.grid(row=row, column=1, padx=10, pady=10)
+            self.initiatives[f"Ini_{character_name}"] = initiative_var
 
         # Separator
         separator_row = self.grid_size()[1]
@@ -153,6 +174,14 @@ class HomePage(tk.Frame):
     def __refresh_windows(self):
         self.parent.wm.get_data()
         self.parent.reload_frame(HomePage)
+
+    def __on_initiative_change(self, char_name):
+        ini = self.initiatives[f"Ini_{char_name}"].get()
+        self.__save_initiatives({f"Ini_{char_name}": ini})
+
+    def __save_initiatives(self, initiatives):
+        print(f"Initiative for {initiatives} changed.")
+        self.parent.wm.save_initiative(initiatives)
 
 
 class SettingsPage(tk.Frame):
