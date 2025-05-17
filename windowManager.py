@@ -7,13 +7,13 @@ ewmh = EWMH()
 
 
 class DofusWindow:
-
     @staticmethod
     def _get_window_link_number():
         n = 0
         while True:
             yield n
             n += 1
+
     _window_link_number = _get_window_link_number()
 
     def __init__(self, window):
@@ -30,11 +30,14 @@ class DofusWindow:
         self.ignore = False
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name} {self.initiative} {self.ignore}"
 
     def activate(self):
         ewmh.setActiveWindow(self.window)
         ewmh.display.flush()
+
+    def set_name(self, name):
+        self.name = name
 
 
 class WindowManager:
@@ -45,6 +48,8 @@ class WindowManager:
         self.current_window = []
         self.on_top = False
         self.location = (None, None)
+
+        self.window_to_link = None
 
         self.get_data()
 
@@ -119,6 +124,10 @@ class WindowManager:
     def __active_current_window(self):
         self.current_window.activate()
 
+    def activate_window(self, window: DofusWindow):
+        self.current_window = window
+        self.__active_current_window()
+
     def close_all_windows(self):
         for window in self.windows:
             self.ewmh.setCloseWindow(window.window)
@@ -150,3 +159,10 @@ class WindowManager:
             ignores_sort.append(initiative[window.name]["ignore"])
 
         self.ignored = ignores_sort
+
+    def set_name_to_link(self, name: str):
+        if self.window_to_link is not None:
+            self.window_to_link.set_name(name)
+            self.window_to_link = None
+        else:
+            print("No window to link")
