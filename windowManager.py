@@ -32,6 +32,10 @@ class DofusWindow:
     def __str__(self):
         return f"{self.name}"
 
+    def activate(self):
+        ewmh.setActiveWindow(self.window)
+        ewmh.display.flush()
+
 
 class WindowManager:
     def __init__(self):
@@ -113,11 +117,7 @@ class WindowManager:
         self.__active_current_window()
 
     def __active_current_window(self):
-        self.active_window(self.current_window)
-
-    def active_window(self, window: DofusWindow):
-        self.ewmh.setActiveWindow(window.window)
-        self.ewmh.display.flush()
+        self.current_window.activate()
 
     def close_all_windows(self):
         for window in self.windows:
