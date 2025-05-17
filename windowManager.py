@@ -7,9 +7,24 @@ ewmh = EWMH()
 
 
 class DofusWindow:
+
+    @staticmethod
+    def _get_window_link_number():
+        n = 0
+        while True:
+            yield n
+            n += 1
+    _window_link_number = _get_window_link_number()
+
     def __init__(self, window):
         self.window = window
-        self.name = get_character_name(ewmh.getWmName(window))
+
+        character_name = get_character_name(ewmh.getWmName(window))
+        self.name = (
+            character_name
+            if not "Dofus'"
+            else f"Need to be link {next(self._window_link_number)}"
+        )
 
         self.initiative = 0
         self.ignore = False
