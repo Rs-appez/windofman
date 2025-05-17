@@ -40,10 +40,21 @@ class DofusWindow:
         self.name = name
         self.load_initiative()
 
+    def set_initiative(self, initiative=None, ignore=None):
+        if initiative:
+            self.initiative = initiative
+        if ignore is not None:
+            self.ignore = ignore
+        self.save_initiative()
+
     def load_initiative(self):
         initiative = ConfManager.get_initiative(self.name)
         self.initiative = initiative[self.name]["initiative"]
         self.ignore = initiative[self.name]["ignore"]
+
+    def save_initiative(self):
+        initiative = {self.name: {"initiative": self.initiative, "ignore": self.ignore}}
+        ConfManager.set_initiative(initiative)
 
 
 class WindowManager:
