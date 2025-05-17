@@ -81,6 +81,7 @@ class HomePage(tk.Frame):
 
         # Initiatives
         self.initiatives = {}
+        self.ignored = {}
 
         self.create_widgets()
 
@@ -107,6 +108,8 @@ class HomePage(tk.Frame):
         for character in self.parent.wm.windows:
             character_name = character.name
             row = self.parent.wm.windows.index(character) + 2
+
+            # Name
             label = tk.Label(
                 self,
                 text=character_name,
@@ -118,6 +121,7 @@ class HomePage(tk.Frame):
             )
             label.grid(row=row, column=0, padx=10, pady=10)
 
+            # Initiative
             initiative_var = tk.StringVar(value=str(character.initiative))
             initiative_var.trace(
                 "w",
@@ -125,6 +129,7 @@ class HomePage(tk.Frame):
                     character_name
                 ),
             )
+            self.initiatives[character_name] = initiative_var
             initiative = tk.Entry(
                 self,
                 textvariable=initiative_var,
@@ -133,7 +138,18 @@ class HomePage(tk.Frame):
                 fg=LIGHT_COLOR,
             )
             initiative.grid(row=row, column=1, padx=10, pady=10)
-            self.initiatives[character_name] = initiative_var
+
+            # Ignore
+            ignore_var = tk.BooleanVar(value=character.ignore)
+            ignore_var.trace(
+                "w",
+                lambda *args, char_name=character_name: self.__on_ignore_change(
+                    char_name
+                ),
+            )
+            self.ignored[character_name] = ignore_var
+            ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
+            ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
         # Separator
         separator_row = self.grid_size()[1]
@@ -178,6 +194,10 @@ class HomePage(tk.Frame):
     def __on_initiative_change(self, char_name):
         ini = self.initiatives[char_name].get()
         self.__save_initiatives({f"Ini_{char_name}": ini})
+
+    def __on_ignore_change(self, char_name):
+        ignore = self.ignored[char_name].get()
+        self.__save_initiatives({f"Ign_{char_name}": ignore})
 
     def __save_initiatives(self, initiatives):
         self.parent.wm.save_initiative(initiatives)
