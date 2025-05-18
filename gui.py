@@ -1,4 +1,6 @@
 import tkinter as tk
+from difflib import get_close_matches
+
 from windowManager import WindowManager, DofusWindow
 
 DARK_COLOR = "#1f1f28"
@@ -136,7 +138,7 @@ class HomePage(tk.Frame):
             initiative = tk.Entry(
                 self,
                 textvariable=initiative_var,
-                width=10,
+                width=5,
                 bg=DARK_COLOR,
                 fg=LIGHT_COLOR,
             )
@@ -300,6 +302,16 @@ class LinkPage(tk.Frame):
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
 
+        self.characters = self.parent.wm.get_alls_characters_names()
+
+        self.option_var = tk.StringVar(value="Select a match")
+        self.option_menu = tk.Listbox(self, height=5, selectmode=tk.SINGLE)
+        self.option_menu.configure(bg=DARK_COLOR, fg=LIGHT_COLOR)
+        for character in self.characters:
+            self.option_menu.insert(tk.END, character)
+        self.option_menu.grid(row=1, column=0, padx=10, pady=10)
+
+
         self.input = tk.StringVar()
 
         self.create_widgets()
@@ -334,7 +346,8 @@ class LinkPage(tk.Frame):
         self.link_button.grid(row=btn_row, column=1, padx=10, pady=10)
 
     def __set_name(self):
-        name = self.input.get()
-        if name:
-            self.parent.wm.set_name_to_link(name)
-            self.parent.reload_frame(HomePage)
+        # name = self.input.get()
+        # if name:
+        #     self.parent.wm.set_name_to_link(name)
+        #     self.parent.reload_frame(HomePage)
+        ...
