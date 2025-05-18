@@ -1,5 +1,8 @@
 import tkinter as tk
+
 from windowManager import WindowManager, DofusWindow
+
+from difflib import get_close_matches
 
 DARK_COLOR = "#1f1f28"
 LIGHT_COLOR = "#dcd7ba"
@@ -311,7 +314,7 @@ class LinkPage(tk.Frame):
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
 
-        self.characters = tk.Variable(value=self.parent.wm.get_alls_characters_names())
+        self.characters = self.parent.wm.get_alls_characters_names()
         self.input = tk.StringVar()
 
         self.create_widgets()
@@ -333,6 +336,7 @@ class LinkPage(tk.Frame):
             fg=LIGHT_COLOR,
         )
         input_field.pack(pady=5)
+        input_field.focus_set()
 
         self.list_input = tk.Listbox(
             self,
@@ -343,11 +347,10 @@ class LinkPage(tk.Frame):
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
         )
+        self.__update_list(self.characters)
         self.list_input.pack(pady=5)
 
-        if self.list_input.size() > 0:
-            self.list_input.select_set(0)
-
+        self.input.trace("w", self.__filter_list)
         self.list_input.bind(
             "<<ListboxSelect>>",
             lambda event: self.__set_name(),
@@ -371,6 +374,22 @@ class LinkPage(tk.Frame):
         )
         self.link_button.pack(side=tk.LEFT, padx=5, pady=5)
 
+    def __update_list(self, items):
+        self.list_input.delete(0, tk.END)
+        for item in items:
+            self.list_input.insert(tk.END, item)
+        if self.list_input.size() > 0:
+            self.list_input.select_set(0)
+
+    def __filter_list(self, *args):
+        name = self.input.get()
+        matches = self.characters
+
+        if name.strip():
+            matches = get_close_matches(name, self.characters, n=5, cutoff=0.2)
+
+        self.__update_list(matches)
+
     def __set_new_name(self):
         name = self.input.get()
         self.input.set("")
@@ -379,6 +398,7 @@ class LinkPage(tk.Frame):
     def __set_name(self):
         selection = self.list_input.curselection()
         name = self.list_input.get(selection) if selection else None
+        self.input.set("")
         if name:
             self.list_input.selection_clear(selection)
             self.list_input.selection_set(0)
