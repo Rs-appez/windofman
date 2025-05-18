@@ -338,6 +338,15 @@ class LinkPage(tk.Frame):
         input_field.pack(pady=5)
         input_field.focus_set()
 
+        btn_add_new = tk.Button(
+            self,
+            text="Add new",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=self.__set_new_name,
+        )
+        btn_add_new.pack(pady=5, side=tk.RIGHT)
+
         self.list_input = tk.Listbox(
             self,
             listvariable=self.characters,
@@ -394,6 +403,7 @@ class LinkPage(tk.Frame):
         name = self.input.get()
         self.input.set("")
         self.__link_window(name)
+        self.characters = self.parent.wm.get_alls_characters_names()
 
     def __set_name(self):
         selection = self.list_input.curselection()
