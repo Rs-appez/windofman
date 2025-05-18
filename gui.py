@@ -311,13 +311,14 @@ class LinkPage(tk.Frame):
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
 
-        self.characters = self.parent.wm.get_alls_characters_names()
+        self.characters = tk.Variable(value=self.parent.wm.get_alls_characters_names())
         self.input = tk.StringVar()
 
         self.create_widgets()
 
         # Bindings
         self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
+        self.bind_all("<Return>", lambda event: self.__set_name())
 
     def create_widgets(self):
         input_label = tk.Label(
@@ -333,17 +334,24 @@ class LinkPage(tk.Frame):
         )
         input_field.pack(pady=5)
 
-        list_input = tk.Listbox(
+        self.list_input = tk.Listbox(
             self,
+            listvariable=self.characters,
+            selectmode=tk.SINGLE,
             height=5,
             width=30,
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
         )
-        for character in self.characters:
-            list_input.insert(tk.END, character)
+        self.list_input.pack(pady=5)
 
-        list_input.pack(pady=5)
+        if self.list_input.size() > 0:
+            self.list_input.select_set(0)
+
+        self.list_input.bind(
+            "<<ListboxSelect>>",
+            lambda event: self.__set_name(),
+        )
 
         self.back_button = tk.Button(
             self,
@@ -363,8 +371,19 @@ class LinkPage(tk.Frame):
         )
         self.link_button.pack(side=tk.LEFT, padx=5, pady=5)
 
-    def __set_name(self):
+    def __set_new_name(self):
         name = self.input.get()
+        self.input.set("")
+        self.__link_window(name)
+
+    def __set_name(self):
+        selection = self.list_input.curselection()
+        name = self.list_input.get(selection) if selection else None
+        self.list_input.selection_clear(selection)
+        self.list_input.selection_set(0)
+        self.__link_window(name)
+
+    def __link_window(self, name):
         if name:
             self.parent.wm.set_name_to_link(name)
             self.parent.wm.sort_windows()
