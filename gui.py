@@ -230,6 +230,9 @@ class SettingsPage(tk.Frame):
         # settings
         self.on_top_var = tk.BooleanVar(value=self.parent.wm.on_top)
 
+        # Bindings
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -275,6 +278,9 @@ class ActionPage(tk.Frame):
         self.configure(bg=self.parent.cget("bg"))
         self.create_widgets()
 
+        # Bindings
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
+
     def create_widgets(self):
         self.close_all_button = tk.Button(
             self,
@@ -308,6 +314,9 @@ class LinkPage(tk.Frame):
         self.input = tk.StringVar()
 
         self.create_widgets()
+
+        # Bindings
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
 
     def create_widgets(self):
         input_label = tk.Label(
