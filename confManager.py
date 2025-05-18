@@ -4,8 +4,10 @@ import json
 CONF_FILE = f"{Path(__file__).parent.absolute()}/config.json"
 
 default_conf = '{"Initiatives":{}, "Settings":{}}'
-default_ini = {"initiative": 0, "ignore": False}
+default_ini = {"initiative": 0, "ignore": False, "lastload": 0}
 default_settings = {"on_top_settings": False}
+
+ini_keys = {"initiative", "ignore", "lastload"}
 
 
 class ConfManager:
@@ -47,8 +49,16 @@ class ConfManager:
             initiative = {}
 
         character_name = character
-        if character_name not in initiative or not isinstance(
-            initiative[character_name]["initiative"], int
+        if character_name not in initiative:
+            initiative[character_name] = default_ini
+
+        if not ini_keys.issubset(initiative[character_name].keys()):
+            initiative[character_name] = default_ini
+
+        if (
+            not isinstance(initiative[character_name]["initiative"], int)
+            or not isinstance(initiative[character_name]["ignore"], bool)
+            or not isinstance(initiative[character_name]["lastload"], int)
         ):
             initiative[character_name] = default_ini
 
@@ -82,6 +92,12 @@ class ConfManager:
                         except:
                             v = False
                         initiative[key]["ignore"] = v
+                    case "lastload":
+                        try:
+                            v = int(v)
+                        except:
+                            v = 0
+                        initiative[key]["lastload"] = v
                     case _:
                         print(f"Unknown key: {k}")
 
