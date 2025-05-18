@@ -136,7 +136,7 @@ class HomePage(tk.Frame):
             initiative = tk.Entry(
                 self,
                 textvariable=initiative_var,
-                width=10,
+                width=5,
                 bg=DARK_COLOR,
                 fg=LIGHT_COLOR,
             )
