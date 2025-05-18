@@ -311,6 +311,7 @@ class LinkPage(tk.Frame):
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
 
+        self.characters = self.parent.wm.get_alls_characters_names()
         self.input = tk.StringVar()
 
         self.create_widgets()
@@ -331,6 +332,18 @@ class LinkPage(tk.Frame):
             fg=LIGHT_COLOR,
         )
         input_field.pack(pady=5)
+
+        list_input = tk.Listbox(
+            self,
+            height=5,
+            width=30,
+            bg=DARK_COLOR,
+            fg=LIGHT_COLOR,
+        )
+        for character in self.characters:
+            list_input.insert(tk.END, character)
+
+        list_input.pack(pady=5)
 
         self.back_button = tk.Button(
             self,
