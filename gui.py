@@ -209,7 +209,12 @@ class HomePage(tk.Frame):
 
     def __save_initiatives(self, character: DofusWindow):
         data = self.datas[character.name]
-        character.set_initiative(initiative=data["ini"].get(), ignore=data["ign"].get())
+        try:
+            ini = int(data["ini"].get())
+        except ValueError:
+            ini = 0
+        character.set_initiative(initiative=ini, ignore=data["ign"].get())
+        self.parent.wm.sort_windows()
 
     def __link_window(self, window):
         self.parent.wm.window_to_link = window
@@ -337,4 +342,5 @@ class LinkPage(tk.Frame):
         name = self.input.get()
         if name:
             self.parent.wm.set_name_to_link(name)
+            self.parent.wm.sort_windows()
             self.parent.reload_frame(HomePage)
