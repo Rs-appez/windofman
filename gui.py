@@ -310,7 +310,10 @@ class LinkPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-
+        input_label = tk.Label(
+            self, text="Enter your character name :", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        input_label.pack(padx=15, pady=5)
         input_field = tk.Entry(
             self,
             textvariable=self.input,
@@ -318,9 +321,8 @@ class LinkPage(tk.Frame):
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
         )
-        input_field.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
+        input_field.pack(pady=5)
 
-        btn_row = self.grid_size()[1]
         self.back_button = tk.Button(
             self,
             text="Back",
@@ -328,7 +330,7 @@ class LinkPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(HomePage),
         )
-        self.back_button.grid(row=btn_row, column=0, padx=10, pady=10)
+        self.back_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.link_button = tk.Button(
             self,
@@ -337,7 +339,7 @@ class LinkPage(tk.Frame):
             fg=DARK_COLOR,
             command=self.__set_name,
         )
-        self.link_button.grid(row=btn_row, column=1, padx=10, pady=10)
+        self.link_button.pack(side=tk.LEFT, padx=5, pady=5)
 
     def __set_name(self):
         name = self.input.get()
