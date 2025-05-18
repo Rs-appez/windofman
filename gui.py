@@ -379,9 +379,10 @@ class LinkPage(tk.Frame):
     def __set_name(self):
         selection = self.list_input.curselection()
         name = self.list_input.get(selection) if selection else None
-        self.list_input.selection_clear(selection)
-        self.list_input.selection_set(0)
-        self.__link_window(name)
+        if name:
+            self.list_input.selection_clear(selection)
+            self.list_input.selection_set(0)
+            self.__link_window(name)
 
     def __link_window(self, name):
         if name:
