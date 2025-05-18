@@ -310,6 +310,7 @@ class LinkPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+
         input_field = tk.Entry(
             self,
             textvariable=self.input,
@@ -317,7 +318,7 @@ class LinkPage(tk.Frame):
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
         )
-        input_field.grid(row=0, column=0, padx=10, pady=10)
+        input_field.grid(row=0, column=0, padx=10, pady=10, columnspan=2)
 
         btn_row = self.grid_size()[1]
         self.back_button = tk.Button(
