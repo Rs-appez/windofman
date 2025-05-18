@@ -48,9 +48,10 @@ class DofusWindow:
         self.save_initiative()
 
     def load_initiative(self):
-        initiative = ConfManager.get_initiative(self.name)
-        self.initiative = initiative[self.name]["initiative"]
-        self.ignore = initiative[self.name]["ignore"]
+        if self.initiative == 0:
+            initiative = ConfManager.get_initiative(self.name)
+            self.initiative = initiative[self.name]["initiative"]
+            self.ignore = initiative[self.name]["ignore"]
 
     def save_initiative(self):
         initiative = {self.name: {"initiative": self.initiative, "ignore": self.ignore}}
