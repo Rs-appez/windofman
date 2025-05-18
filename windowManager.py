@@ -38,6 +38,8 @@ class DofusWindow:
 
     def set_name(self, name):
         self.name = name
+        self.initiative = 0
+        self.ignore = False
         self.load_initiative()
 
     def set_initiative(self, initiative=None, ignore=None):
