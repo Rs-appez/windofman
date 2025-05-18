@@ -42,7 +42,7 @@ class DofusWindow:
         self.ignore = False
         self.load_initiative()
 
-    def set_initiative(self, initiative=None, ignore=None):
+    def set_initiative(self, initiative: int = None, ignore: bool = None):
         if initiative:
             self.initiative = initiative
         if ignore is not None:
