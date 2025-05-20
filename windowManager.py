@@ -3,6 +3,8 @@ from ewmh import EWMH
 from confManager import ConfManager
 from tools import get_character_name
 
+import time
+
 ewmh = EWMH()
 
 
@@ -28,6 +30,10 @@ class DofusWindow:
 
         self.initiative = 0
         self.ignore = False
+        self.lastload = int(time.time())
+
+        self.load_initiative()
+        self.save_initiative()
 
     def __str__(self):
         return f"{self.name} {self.initiative} {self.ignore}"
@@ -56,7 +62,13 @@ class DofusWindow:
             self.ignore = initiative[self.name]["ignore"]
 
     def save_initiative(self):
-        initiative = {self.name: {"initiative": self.initiative, "ignore": self.ignore}}
+        initiative = {
+            self.name: {
+                "initiative": self.initiative,
+                "ignore": self.ignore,
+                "lastload": self.lastload,
+            }
+        }
         ConfManager.set_initiative(initiative)
 
 
@@ -161,16 +173,11 @@ class WindowManager:
             self.ewmh.setCloseWindow(window.window)
 
     def sort_windows(self):
-        self.__get_initiatives()
         self.windows = sorted(
             self.windows,
             key=lambda w: w.initiative,
             reverse=True,
         )
-
-    def __get_initiatives(self):
-        for window in self.windows:
-            window.load_initiative()
 
         self.__sort_ignored()
 
