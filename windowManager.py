@@ -101,7 +101,11 @@ class WindowManager:
             window.save_initiative()
 
     def get_alls_characters_names(self) -> list:
-        return [name for name in ConfManager.get_characters() if " " not in name]
+        characters = ConfManager.get_characters()
+        characters.sort(
+            key=lambda c: c[1], reverse=True)
+
+        return [c[0] for c in characters]
 
     def __get_windows(self):
         windows = []
@@ -113,7 +117,8 @@ class WindowManager:
                 b"Dofus 3." in window_name or window_name == b"Dofus"
             ):
                 if window in old_windows:
-                    windows.append([w for w in self.windows if w.window == window][0])
+                    windows.append(
+                        [w for w in self.windows if w.window == window][0])
                 else:
                     windows.append(DofusWindow(window))
 
@@ -126,7 +131,8 @@ class WindowManager:
         settings = ConfManager.get_settings()
         self.on_top = settings["on_top_settings"]
         self.location = (
-            settings["location"] if "location" in settings.keys() else (None, None)
+            settings["location"] if "location" in settings.keys() else (
+                None, None)
         )
 
     def __set_current_window(self):
