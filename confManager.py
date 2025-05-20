@@ -36,7 +36,18 @@ class ConfManager:
             characters = {}
             ConfManager.__save_initiative(characters)
 
-        return characters.keys()
+        res = []
+        for character in characters.keys():
+            if " " in character:
+                continue
+            lastload = (
+                characters[character]["lastload"]
+                if "lastload" in characters[character]
+                else 0
+            )
+            res.append((character, lastload))
+
+        return res
 
     # Initiative methods
 
