@@ -39,7 +39,8 @@ class GUIApp(tk.Tk):
         self.mainloop()
 
     def __init_frame(self):
-        frame_classes = (HomePage, SettingsPage, ActionPage, LinkPage)
+        frame_classes = (HomePage, SettingsPage,
+                         ActionPage, LinkPage, ShortcutPage)
         for F in frame_classes:
             self.__make_frame(F)
 
@@ -100,7 +101,8 @@ class HomePage(tk.Frame):
         )
         label_initiative.grid(row=0, column=1, padx=10, pady=10)
 
-        label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_ignore = tk.Label(self, text="Ignore",
+                                fg=LIGHT_COLOR, bg=DARK_COLOR)
         label_ignore.grid(row=0, column=2, padx=10, pady=10)
 
         label_link = tk.Label(self, text="Link", fg=LIGHT_COLOR, bg=DARK_COLOR)
@@ -152,7 +154,8 @@ class HomePage(tk.Frame):
                 lambda *args, c=character: self.__save_initiatives(c),
             )
             self.datas[character_name]["ign"] = ignore_var
-            ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
+            ignore_checkbox = tk.Checkbutton(
+                self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
             # Link button
@@ -179,32 +182,41 @@ class HomePage(tk.Frame):
 
         # Buttons
         btn_row = self.grid_size()[1]
-        self.refresh_button = tk.Button(
+        refresh_button = tk.Button(
             self,
             text="Refresh",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=self.__refresh_windows,
         )
-        self.refresh_button.grid(row=btn_row, column=0, padx=10, pady=10)
+        refresh_button.grid(row=btn_row, column=0, padx=10, pady=10)
 
-        self.action_button = tk.Button(
+        action_button = tk.Button(
             self,
             text="Actions",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(ActionPage),
         )
-        self.action_button.grid(row=btn_row, column=1, padx=10, pady=10)
+        action_button.grid(row=btn_row, column=1, padx=10, pady=10)
 
-        self.settings_button = tk.Button(
+        settings_button = tk.Button(
             self,
             text="Settings",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(SettingsPage),
         )
-        self.settings_button.grid(row=btn_row, column=2, padx=10, pady=10)
+        settings_button.grid(row=btn_row, column=2, padx=10, pady=10)
+
+        shortcut_button = tk.Button(
+            self,
+            text="Shortcuts",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(ShortcutPage),
+        )
+        shortcut_button.grid(row=btn_row, column=3, padx=10, pady=10)
 
     def __refresh_windows(self):
         self.parent.wm.get_data()
@@ -419,3 +431,25 @@ class LinkPage(tk.Frame):
             self.parent.wm.set_name_to_link(name)
             self.parent.wm.sort_windows()
             self.parent.reload_frame(HomePage)
+
+
+class ShortcutPage(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.configure(bg=self.parent.cget("bg"))
+
+        # Bindings
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.back_button = tk.Button(
+            self,
+            text="Back",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.parent.go_page(HomePage),
+        )
+        self.back_button.pack(side=tk.LEFT, padx=5, pady=5)
