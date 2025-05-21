@@ -2,6 +2,11 @@
 
 A light tool for ordering and switch between multiple dofus window on linux
 
+## Requirements
+
+- Python 3.8+
+- tk (usually installed by default on most Linux distributions)
+
 ## Initialization
 
 Setup the virtual environement
