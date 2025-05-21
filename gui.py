@@ -39,8 +39,7 @@ class GUIApp(tk.Tk):
         self.mainloop()
 
     def __init_frame(self):
-        frame_classes = (HomePage, SettingsPage,
-                         ActionPage, LinkPage, ShortcutPage)
+        frame_classes = (HomePage, SettingsPage, ActionPage, LinkPage, ShortcutPage)
         for F in frame_classes:
             self.__make_frame(F)
 
@@ -101,8 +100,7 @@ class HomePage(tk.Frame):
         )
         label_initiative.grid(row=0, column=1, padx=10, pady=10)
 
-        label_ignore = tk.Label(self, text="Ignore",
-                                fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
         label_ignore.grid(row=0, column=2, padx=10, pady=10)
 
         label_link = tk.Label(self, text="Link", fg=LIGHT_COLOR, bg=DARK_COLOR)
@@ -129,7 +127,7 @@ class HomePage(tk.Frame):
                 bg=DARK_COLOR,
             )
             label.bind("<Button-1>", lambda e, c=character: c.activate())
-            label.grid(row=row, column=0, padx=10, pady=10)
+            label.grid(row=row, column=0, padx=10, pady=10, sticky="w")
 
             # Initiative
             initiative_var = tk.StringVar(value=str(character.initiative))
@@ -154,8 +152,7 @@ class HomePage(tk.Frame):
                 lambda *args, c=character: self.__save_initiatives(c),
             )
             self.datas[character_name]["ign"] = ignore_var
-            ignore_checkbox = tk.Checkbutton(
-                self, variable=ignore_var, bg=DARK_COLOR)
+            ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
             # Link button
@@ -181,42 +178,44 @@ class HomePage(tk.Frame):
         )
 
         # Buttons
+        btn_frame = tk.Frame(self, bg=DARK_COLOR)
         btn_row = self.grid_size()[1]
+        btn_frame.grid(row=btn_row, column=0, columnspan=separator_span)
         refresh_button = tk.Button(
-            self,
+            btn_frame,
             text="Refresh",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=self.__refresh_windows,
         )
-        refresh_button.grid(row=btn_row, column=0, padx=10, pady=10)
+        refresh_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         action_button = tk.Button(
-            self,
+            btn_frame,
             text="Actions",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(ActionPage),
         )
-        action_button.grid(row=btn_row, column=1, padx=10, pady=10)
+        action_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         settings_button = tk.Button(
-            self,
+            btn_frame,
             text="Settings",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(SettingsPage),
         )
-        settings_button.grid(row=btn_row, column=2, padx=10, pady=10)
+        settings_button.pack(side=tk.LEFT, padx=10, pady=10)
 
         shortcut_button = tk.Button(
-            self,
+            btn_frame,
             text="Shortcuts",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(ShortcutPage),
         )
-        shortcut_button.grid(row=btn_row, column=3, padx=10, pady=10)
+        shortcut_button.pack(side=tk.LEFT, padx=10, pady=10)
 
     def __refresh_windows(self):
         self.parent.wm.get_data()
@@ -449,18 +448,14 @@ class ShortcutPage(tk.Frame):
             self, text="Next character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         next_label.grid(row=0, column=0, padx=15, pady=5, sticky="w")
-        next_shorcut_label = tk.Label(
-            self, text="F2", fg=LIGHT_COLOR, bg=DARK_COLOR
-        )
+        next_shorcut_label = tk.Label(self, text="F2", fg=LIGHT_COLOR, bg=DARK_COLOR)
         next_shorcut_label.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
         prev_label = tk.Label(
             self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         prev_label.grid(row=1, column=0, padx=15, pady=5, sticky="w")
-        prev_shorcut_label = tk.Label(
-            self, text="F3", fg=LIGHT_COLOR, bg=DARK_COLOR
-        )
+        prev_shorcut_label = tk.Label(self, text="F3", fg=LIGHT_COLOR, bg=DARK_COLOR)
         prev_shorcut_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         self.back_button = tk.Button(
             self,
