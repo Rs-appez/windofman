@@ -1,6 +1,6 @@
 # Windofman
 
-A light tool for ordering and switch between multiple dofus window on linux
+A light tool for ordering and switch between multiple dofus windows on linux
 
 ## Requirements
 
@@ -29,7 +29,7 @@ $ ./windofman.py
 
 - Set the initative of your characters
 
-- You can clic on your  charactere name to directly active the window
+- You can clic on your charactere name to directly active the window
 
 ### Shortcut
 
