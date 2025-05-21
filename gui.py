@@ -445,6 +445,23 @@ class ShortcutPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        next_label = tk.Label(
+            self, text="Next character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        next_label.grid(row=0, column=0, padx=15, pady=5, sticky="w")
+        next_shorcut_label = tk.Label(
+            self, text="F2", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        next_shorcut_label.grid(row=0, column=1, padx=5, pady=5, sticky="w")
+
+        prev_label = tk.Label(
+            self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        prev_label.grid(row=1, column=0, padx=15, pady=5, sticky="w")
+        prev_shorcut_label = tk.Label(
+            self, text="F3", fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
+        prev_shorcut_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         self.back_button = tk.Button(
             self,
             text="Back",
@@ -452,4 +469,4 @@ class ShortcutPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(HomePage),
         )
-        self.back_button.pack(side=tk.LEFT, padx=5, pady=5)
+        self.back_button.grid(row=2, column=0, padx=5, pady=5, sticky="sw")
