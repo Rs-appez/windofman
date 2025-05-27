@@ -126,7 +126,7 @@ class HomePage(tk.Frame):
                 fg=LIGHT_COLOR,
                 bg=DARK_COLOR,
             )
-            label.bind("<Button-1>", lambda e, c=character: c.activate())
+            label.bind("<Button-1>", lambda e, c=character: self.parent.wm.activate_window(c))
             label.grid(row=row, column=0, padx=10, pady=10, sticky="w")
 
             # Initiative
