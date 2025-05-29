@@ -3,9 +3,10 @@ import json
 
 CONF_FILE = f"{Path(__file__).parent.absolute()}/config.json"
 
-default_conf = '{"Initiatives":{}, "Settings":{}}'
+default_conf = '{"Initiatives":{}, "Settings":{}, "Keybinds":{}}'
 default_ini = {"initiative": 0, "ignore": False, "lastload": 0}
 default_settings = {"on_top_settings": False}
+default_keybinds = {"next": "f2", "previous": "f3"}
 
 ini_keys = {"initiative", "ignore", "lastload"}
 
@@ -148,5 +149,34 @@ class ConfManager:
     def __save_settings(settings):
         config = ConfManager.get_json()
         config["Settings"] = settings
+        with open(CONF_FILE, "w") as cf:
+            json.dump(config, cf)
+
+    # Keybinds methods
+    @staticmethod
+    def get_keybinds():
+        try:
+            keybinds = ConfManager.get_json()["Keybinds"]
+            if keybinds == {}:
+                raise KeyError
+
+        except KeyError:
+            keybinds = default_keybinds
+            ConfManager.__save_keybinds(keybinds)
+
+        return keybinds
+
+    @staticmethod
+    def set_keybinds(values):
+        keybinds = ConfManager.get_json()["Keybinds"]
+        for key, value in values.items():
+            keybinds[key] = value
+
+        ConfManager.__save_keybinds(keybinds)
+
+    @staticmethod
+    def __save_keybinds(keybinds):
+        config = ConfManager.get_json()
+        config["Keybinds"] = keybinds
         with open(CONF_FILE, "w") as cf:
             json.dump(config, cf)
