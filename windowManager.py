@@ -150,6 +150,8 @@ class WindowManager:
         self.__switch(0)
 
     def __switch(self, forward: bool):
+        if not self.windows:
+            return
         step = 1 if forward else -1
         index = self.windows.index(self.current_window) + step
 
