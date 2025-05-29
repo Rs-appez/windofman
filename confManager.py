@@ -9,6 +9,7 @@ default_settings = {"on_top_settings": False}
 default_keybinds = {"next": "f2", "previous": "f3"}
 
 ini_keys = {"initiative", "ignore", "lastload"}
+keybinds_keys = {"next", "previous"}
 
 
 class ConfManager:
@@ -158,6 +159,8 @@ class ConfManager:
         try:
             keybinds = ConfManager.get_json()["Keybinds"]
             if keybinds == {}:
+                raise KeyError
+            if not keybinds_keys.issubset(keybinds.keys()):
                 raise KeyError
 
         except KeyError:
