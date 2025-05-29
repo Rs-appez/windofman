@@ -11,16 +11,14 @@ class KeyboardManager:
 
         self.next_key = keyboard.Key.f2
         self.previous_key = keyboard.Key.f3
-        self.__init_keys()
+        self.set_keys()
 
         self.start_thread()
 
-    def __init_keys(self):
+    def set_keys(self):
         keys = ConfManager.get_keybinds()
-        if "next" in keys:
-            self.next_key = self.__parse_key(keys["next"])
-        if "previous" in keys:
-            self.previous_key = self.__parse_key(keys["previous"])
+        self.next_key = self.__parse_key(keys["next"])
+        self.previous_key = self.__parse_key(keys["previous"])
 
     def __parse_key(self, key_str):
         try:
