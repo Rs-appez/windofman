@@ -1,5 +1,6 @@
 from pynput import keyboard
 from windowManager import WindowManager
+from confManager import ConfManager
 import threading
 
 
@@ -8,16 +9,35 @@ class KeyboardManager:
         self.alt_pressed = False
         self.windowManager = windowManager
 
+        self.next_key = keyboard.Key.f2
+        self.previous_key = keyboard.Key.f3
+        self.__init_keys()
+
         self.start_thread()
+
+    def __init_keys(self):
+        keys = ConfManager.get_keybinds()
+        if "next" in keys:
+            self.next_key = self.__parse_key(keys["next"])
+        if "previous" in keys:
+            self.previous_key = self.__parse_key(keys["previous"])
+
+    def __parse_key(self, key_str):
+        try:
+            # Try special keys (e.g., f2, f3, alt)
+            return getattr(keyboard.Key, key_str)
+        except AttributeError:
+            # Fallback to single character keys
+            return keyboard.KeyCode.from_char(key_str)
 
     def on_press(self, key):
         if key == keyboard.Key.alt:
             self.alt_pressed = True
 
         try:
-            if key == keyboard.Key.f2:
+            if key == self.next_key:
                 self.windowManager.next()
-            if key == keyboard.Key.f3:
+            if key == self.previous_key:
                 self.windowManager.previous()
         except AttributeError:
             return
