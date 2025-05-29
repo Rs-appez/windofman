@@ -16,6 +16,8 @@ class GUIApp(tk.Tk):
         self.wm = wm
         self.km = km
 
+        self.edit_key = None
+
         self.title("Windofman")
         self.configure(bg=DARK_COLOR)
         self.protocol("WM_DELETE_WINDOW", self.__on_close)
@@ -43,13 +45,22 @@ class GUIApp(tk.Tk):
         self.mainloop()
 
     def __init_frame(self):
-        frame_classes = (HomePage, SettingsPage, ActionPage, LinkPage, ShortcutPage)
+        frame_classes = (
+            HomePage,
+            SettingsPage,
+            ActionPage,
+            LinkPage,
+            ShortcutPage,
+            AssignKeyPage,
+        )
         for F in frame_classes:
             self.__make_frame(F)
 
     def __init_bindings(self):
         self.unbind_all("<Return>")
+        self.unbind_all("<KeyPress>")
         self.bind_all("<Escape>", lambda event: self.go_page(HomePage))
+
     def load_config(self):
         self.attributes("-topmost", self.wm.on_top)
 
@@ -66,9 +77,13 @@ class GUIApp(tk.Tk):
 
     def reload_frame(self, frame_class):
         if frame_class in self.frames:
-            old = self.frames[frame_class]
-            self.__make_frame(frame_class)
-            old.destroy()
+            # old = self.frames[frame_class]
+            # self.__make_frame(frame_class)
+            # old.destroy()
+            frame = self.frames[frame_class]
+            for child in frame.winfo_children():
+                child.destroy()
+            frame.create_widgets()
 
     def __make_frame(self, frame_class):
         frame = frame_class(self)
@@ -446,13 +461,13 @@ class ShortcutPage(tk.Frame):
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
 
-        self.next_key = "f2"
-        self.previous_key = "f3"
-        self.__get_shortcuts()
+        self.next_key = "F2"
+        self.previous_key = "F3"
 
         self.create_widgets()
 
     def create_widgets(self):
+        self.__get_shortcuts()
         next_label = tk.Label(
             self, text="Next character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
@@ -461,6 +476,14 @@ class ShortcutPage(tk.Frame):
             self, text=self.next_key, fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         next_shorcut_label.grid(row=0, column=1, padx=5, pady=5, sticky="w")
+        next_shorcut_edit_button = tk.Button(
+            self,
+            text="Edit",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.__edit_shortcut("next"),
+        )
+        next_shorcut_edit_button.grid(row=0, column=2, padx=5, pady=5, sticky="w")
 
         prev_label = tk.Label(
             self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
@@ -470,6 +493,14 @@ class ShortcutPage(tk.Frame):
             self, text=self.previous_key, fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         prev_shorcut_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+        prev_shorcut_edit_button = tk.Button(
+            self,
+            text="Edit",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=lambda: self.__edit_shortcut("previous"),
+        )
+        prev_shorcut_edit_button.grid(row=1, column=2, padx=5, pady=5, sticky="w")
 
         # btns
         btn_frame = tk.Frame(self, bg=DARK_COLOR)
@@ -492,6 +523,11 @@ class ShortcutPage(tk.Frame):
         )
         self.reset_button.pack(side=tk.RIGHT, padx=5, pady=5)
 
+    def __edit_shortcut(self, key):
+        self.parent.edit_key = key
+        self.parent.reload_frame(AssignKeyPage)
+        self.parent.go_page(AssignKeyPage)
+
     def __get_shortcuts(self):
         keys = ConfManager.get_keybinds()
         self.next_key = keys.get("next")
@@ -500,5 +536,34 @@ class ShortcutPage(tk.Frame):
     def __reset_shortcuts(self):
         ConfManager.reset_keybinds()
         self.parent.km.set_keys()
-        self.__get_shortcuts()
         self.parent.reload_frame(ShortcutPage)
+
+
+class AssignKeyPage(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.configure(bg=self.parent.cget("bg"))
+
+        self.create_widgets()
+
+    def set_bindings(self):
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(ShortcutPage))
+        self.bind_all("<KeyPress>", self.__assign_key)
+
+    def create_widgets(self):
+        self.label = tk.Label(
+            self,
+            text=f"Press a key to assign to {self.parent.edit_key}...",
+            fg=LIGHT_COLOR,
+            bg=DARK_COLOR,
+        )
+        self.label.pack(padx=15, pady=5)
+
+    def __assign_key(self, event):
+        key = event.char or event.keysym
+
+        ConfManager.set_keybinds({self.parent.edit_key: key})
+        self.parent.km.set_keys()
+        self.parent.reload_frame(ShortcutPage)
+        self.parent.go_page(ShortcutPage)
