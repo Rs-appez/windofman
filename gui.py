@@ -1,6 +1,8 @@
 import tkinter as tk
 
-from windowManager import WindowManager, DofusWindow, ConfManager
+from windowManager import WindowManager, DofusWindow
+from keyboardManager import KeyboardManager
+from confManager import ConfManager
 
 from difflib import get_close_matches
 
@@ -9,9 +11,10 @@ LIGHT_COLOR = "#dcd7ba"
 
 
 class GUIApp(tk.Tk):
-    def __init__(self, wm: WindowManager):
+    def __init__(self, wm: WindowManager, km: KeyboardManager):
         super().__init__()
         self.wm = wm
+        self.km = km
 
         self.title("Windofman")
         self.configure(bg=DARK_COLOR)
@@ -475,8 +478,22 @@ class ShortcutPage(tk.Frame):
             command=lambda: self.parent.go_page(HomePage),
         )
         self.back_button.grid(row=2, column=0, padx=5, pady=5, sticky="sw")
+        self.reset_button = tk.Button(
+            self,
+            text="Reset shortcuts",
+            bg=LIGHT_COLOR,
+            fg=DARK_COLOR,
+            command=self.__reset_shortcuts,
+        )
+        self.reset_button.grid(row=2, column=1, padx=5, pady=5, sticky="sw")
 
     def __get_shortcuts(self):
         keys = ConfManager.get_keybinds()
         self.next_key = keys.get("next")
         self.previous_key = keys.get("previous")
+
+    def __reset_shortcuts(self):
+        ConfManager.reset_keybinds()
+        self.parent.km.set_keys()
+        self.__get_shortcuts()
+        self.parent.reload_frame(ShortcutPage)

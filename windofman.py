@@ -4,13 +4,9 @@ from windowManager import WindowManager
 from gui import GUIApp
 
 
-def main():
+if __name__ == "__main__":
     wm = WindowManager()
-    gui = GUIApp(wm)
-    KeyboardManager(wm)
+    km = KeyboardManager(wm)
+    gui = GUIApp(wm, km)
 
     gui.start()
-
-
-if __name__ == "__main__":
-    main()
