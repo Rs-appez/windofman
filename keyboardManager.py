@@ -22,8 +22,9 @@ class KeyboardManager:
 
     def __parse_key(self, key_str):
         try:
+            key = key_str.lower()
             # Try special keys (e.g., f2, f3, alt)
-            return getattr(keyboard.Key, key_str)
+            return getattr(keyboard.Key, key)
         except AttributeError:
             # Fallback to single character keys
             return keyboard.KeyCode.from_char(key_str)

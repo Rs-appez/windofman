@@ -6,7 +6,7 @@ CONF_FILE = f"{Path(__file__).parent.absolute()}/config.json"
 default_conf = '{"Initiatives":{}, "Settings":{}, "Keybinds":{}}'
 default_ini = {"initiative": 0, "ignore": False, "lastload": 0}
 default_settings = {"on_top_settings": False}
-default_keybinds = {"next": "f2", "previous": "f3"}
+default_keybinds = {"next": "F2", "previous": "F3"}
 
 ini_keys = {"initiative", "ignore", "lastload"}
 keybinds_keys = {"next", "previous"}
