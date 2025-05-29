@@ -470,22 +470,27 @@ class ShortcutPage(tk.Frame):
             self, text=self.previous_key, fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         prev_shorcut_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+
+        # btns
+        btn_frame = tk.Frame(self, bg=DARK_COLOR)
+        btn_row = self.grid_size()[1]
+        btn_frame.grid(row=btn_row, column=0, columnspan=3, pady=10)
         self.back_button = tk.Button(
-            self,
+            btn_frame,
             text="Back",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=lambda: self.parent.go_page(HomePage),
         )
-        self.back_button.grid(row=2, column=0, padx=5, pady=5, sticky="sw")
+        self.back_button.pack(side=tk.LEFT, padx=5, pady=5)
         self.reset_button = tk.Button(
-            self,
+            btn_frame,
             text="Reset shortcuts",
             bg=LIGHT_COLOR,
             fg=DARK_COLOR,
             command=self.__reset_shortcuts,
         )
-        self.reset_button.grid(row=2, column=1, padx=5, pady=5, sticky="sw")
+        self.reset_button.pack(side=tk.RIGHT, padx=5, pady=5)
 
     def __get_shortcuts(self):
         keys = ConfManager.get_keybinds()
