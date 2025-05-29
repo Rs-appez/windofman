@@ -178,6 +178,11 @@ class ConfManager:
         ConfManager.__save_keybinds(keybinds)
 
     @staticmethod
+    def reset_keybinds():
+        keybinds = default_keybinds
+        ConfManager.__save_keybinds(keybinds)
+
+    @staticmethod
     def __save_keybinds(keybinds):
         config = ConfManager.get_json()
         config["Keybinds"] = keybinds
