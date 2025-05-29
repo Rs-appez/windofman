@@ -38,6 +38,7 @@ class GUIApp(tk.Tk):
         self.__init_frame()
 
     def start(self):
+        self.__init_bindings()
         self.go_page(HomePage)
         self.mainloop()
 
@@ -46,11 +47,19 @@ class GUIApp(tk.Tk):
         for F in frame_classes:
             self.__make_frame(F)
 
+    def __init_bindings(self):
+        self.unbind_all("<Return>")
+        self.bind_all("<Escape>", lambda event: self.go_page(HomePage))
     def load_config(self):
         self.attributes("-topmost", self.wm.on_top)
 
     def go_page(self, page):
         try:
+            self.__init_bindings()
+            try:
+                self.frames[page].set_bindings()
+            except AttributeError:
+                pass
             self.frames[page].tkraise()
         except KeyError:
             print(f"Page {page} not found.")
@@ -249,9 +258,6 @@ class SettingsPage(tk.Frame):
         # settings
         self.on_top_var = tk.BooleanVar(value=self.parent.wm.on_top)
 
-        # Bindings
-        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
-
         self.create_widgets()
 
     def create_widgets(self):
@@ -297,9 +303,6 @@ class ActionPage(tk.Frame):
         self.configure(bg=self.parent.cget("bg"))
         self.create_widgets()
 
-        # Bindings
-        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
-
     def create_widgets(self):
         self.close_all_button = tk.Button(
             self,
@@ -335,8 +338,7 @@ class LinkPage(tk.Frame):
 
         self.create_widgets()
 
-        # Bindings
-        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
+    def set_bindings(self):
         self.bind_all("<Return>", lambda event: self.__set_name())
 
     def create_widgets(self):
@@ -435,6 +437,7 @@ class LinkPage(tk.Frame):
             self.parent.wm.set_name_to_link(name)
             self.parent.wm.sort_windows()
             self.parent.reload_frame(HomePage)
+            self.parent.go_page(HomePage)
 
 
 class ShortcutPage(tk.Frame):
@@ -442,9 +445,6 @@ class ShortcutPage(tk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.configure(bg=self.parent.cget("bg"))
-
-        # Bindings
-        self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
 
         self.next_key = "f2"
         self.previous_key = "f3"
