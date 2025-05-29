@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from windowManager import WindowManager, DofusWindow
+from windowManager import WindowManager, DofusWindow, ConfManager
 
 from difflib import get_close_matches
 
@@ -126,7 +126,9 @@ class HomePage(tk.Frame):
                 fg=LIGHT_COLOR,
                 bg=DARK_COLOR,
             )
-            label.bind("<Button-1>", lambda e, c=character: self.parent.wm.activate_window(c))
+            label.bind(
+                "<Button-1>", lambda e, c=character: self.parent.wm.activate_window(c)
+            )
             label.grid(row=row, column=0, padx=10, pady=10, sticky="w")
 
             # Initiative
@@ -441,6 +443,10 @@ class ShortcutPage(tk.Frame):
         # Bindings
         self.bind_all("<Escape>", lambda event: self.parent.go_page(HomePage))
 
+        self.next_key = "f2"
+        self.previous_key = "f3"
+        self.__get_shortcuts()
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -448,14 +454,18 @@ class ShortcutPage(tk.Frame):
             self, text="Next character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         next_label.grid(row=0, column=0, padx=15, pady=5, sticky="w")
-        next_shorcut_label = tk.Label(self, text="F2", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        next_shorcut_label = tk.Label(
+            self, text=self.next_key, fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
         next_shorcut_label.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
         prev_label = tk.Label(
             self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         prev_label.grid(row=1, column=0, padx=15, pady=5, sticky="w")
-        prev_shorcut_label = tk.Label(self, text="F3", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        prev_shorcut_label = tk.Label(
+            self, text=self.previous_key, fg=LIGHT_COLOR, bg=DARK_COLOR
+        )
         prev_shorcut_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         self.back_button = tk.Button(
             self,
@@ -465,3 +475,8 @@ class ShortcutPage(tk.Frame):
             command=lambda: self.parent.go_page(HomePage),
         )
         self.back_button.grid(row=2, column=0, padx=5, pady=5, sticky="sw")
+
+    def __get_shortcuts(self):
+        keys = ConfManager.get_keybinds()
+        self.next_key = keys.get("next")
+        self.previous_key = keys.get("previous")
