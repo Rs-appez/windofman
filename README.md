@@ -31,13 +31,16 @@ $ ./windofman.py
 Since DOFUS Unity, the window name doesn't take the character name anymore on Linux.  
 Therefore, we have to manually link each window with a character.
 
-For each window click on the link button :  
+For each window click on the link button :
+
 ![image](https://github.com/user-attachments/assets/16b8e95a-b966-44d8-a0e7-581a7d44ea3f)
 
-- If it is a new character, enter the name and click on **Add new**  
+- If it is a new character, enter the name and click on **Add new**
+  
 ![create-character](https://github.com/user-attachments/assets/7478c6cd-ef58-4c09-b520-dea79a45c412)
 
-- If the character already exists, click on their name in the list *(you can filter with the input above)*  
+- If the character already exists, click on their name in the list *(you can filter with the input above)*
+  
 ![image](https://github.com/user-attachments/assets/9a75eeee-8035-4e0d-8b06-5d64fd8c0148)
 
 ### Usage
@@ -53,4 +56,6 @@ The default shortcuts are :
 
 - Press **F2** to switch to the next character
 
-- Press **F3** to switch to the previous character
+- Press **F3** to switch to the previous character  
+
+*You can set your own shortcuts on the shorcuts page*
