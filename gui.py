@@ -355,21 +355,21 @@ class LinkPage(tk.Frame):
 
     def set_bindings(self):
         self.bind_all("<Return>", lambda event: self.__set_name())
+        self.input_field.focus_set()
 
     def create_widgets(self):
         input_label = tk.Label(
             self, text="Enter your character name :", fg=LIGHT_COLOR, bg=DARK_COLOR
         )
         input_label.pack(padx=15, pady=5)
-        input_field = tk.Entry(
+        self.input_field = tk.Entry(
             self,
             textvariable=self.input,
             width=30,
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
         )
-        input_field.pack(pady=5)
-        input_field.focus_set()
+        self.input_field.pack(pady=5)
 
         btn_add_new = tk.Button(
             self,
