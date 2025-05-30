@@ -24,7 +24,7 @@ $ ./init_venv_windofman.sh
 $ ./windofman.py
 ```
 
-## Features
+## Usage
 
 ### Link your characeter
 
@@ -43,7 +43,7 @@ For each window click on the link button :
   
 ![image](https://github.com/user-attachments/assets/9a75eeee-8035-4e0d-8b06-5d64fd8c0148)
 
-### Usage
+### Features
 
 - Set the initative of each of your characters *(the window will switch on the initiative order)*
 
