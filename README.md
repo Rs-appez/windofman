@@ -26,7 +26,7 @@ $ ./windofman.py
 
 ## Usage
 
-### Link your characeter
+### Link your character
 
 Since DOFUS Unity, the window name doesn't take the character name anymore on Linux.  
 Therefore, we have to manually link each window with a character.
