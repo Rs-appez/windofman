@@ -127,7 +127,8 @@ class HomePage(tk.Frame):
         )
         label_initiative.grid(row=0, column=1, padx=10, pady=10)
 
-        label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_ignore = tk.Label(self, text="Ignore",
+                                fg=LIGHT_COLOR, bg=DARK_COLOR)
         label_ignore.grid(row=0, column=2, padx=10, pady=10)
 
         label_link = tk.Label(self, text="Link", fg=LIGHT_COLOR, bg=DARK_COLOR)
@@ -154,7 +155,8 @@ class HomePage(tk.Frame):
                 bg=DARK_COLOR,
             )
             label.bind(
-                "<Button-1>", lambda e, c=character: self.parent.wm.activate_window(c)
+                "<Button-1>", lambda e, c=character: self.parent.wm.activate_window(
+                    c)
             )
             label.grid(row=row, column=0, padx=10, pady=10, sticky="w")
 
@@ -171,6 +173,7 @@ class HomePage(tk.Frame):
                 width=5,
                 bg=DARK_COLOR,
                 fg=LIGHT_COLOR,
+                insertbackground=LIGHT_COLOR,
             )
             initiative.grid(row=row, column=1, padx=10, pady=10)
 
@@ -181,7 +184,8 @@ class HomePage(tk.Frame):
                 lambda *args, c=character: self.__save_initiatives(c),
             )
             self.datas[character_name]["ign"] = ignore_var
-            ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
+            ignore_checkbox = tk.Checkbutton(
+                self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
             # Link button
@@ -368,6 +372,7 @@ class LinkPage(tk.Frame):
             width=30,
             bg=DARK_COLOR,
             fg=LIGHT_COLOR,
+            insertbackground=LIGHT_COLOR,
         )
         self.input_field.pack(pady=5)
 
@@ -483,7 +488,8 @@ class ShortcutPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.__edit_shortcut("next"),
         )
-        next_shorcut_edit_button.grid(row=0, column=2, padx=5, pady=5, sticky="w")
+        next_shorcut_edit_button.grid(
+            row=0, column=2, padx=5, pady=5, sticky="w")
 
         prev_label = tk.Label(
             self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
@@ -500,7 +506,8 @@ class ShortcutPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.__edit_shortcut("previous"),
         )
-        prev_shorcut_edit_button.grid(row=1, column=2, padx=5, pady=5, sticky="w")
+        prev_shorcut_edit_button.grid(
+            row=1, column=2, padx=5, pady=5, sticky="w")
 
         # btns
         btn_frame = tk.Frame(self, bg=DARK_COLOR)
@@ -548,7 +555,8 @@ class AssignKeyPage(tk.Frame):
         self.create_widgets()
 
     def set_bindings(self):
-        self.bind_all("<Escape>", lambda event: self.parent.go_page(ShortcutPage))
+        self.bind_all(
+            "<Escape>", lambda event: self.parent.go_page(ShortcutPage))
         self.bind_all("<KeyPress>", self.__assign_key)
 
     def create_widgets(self):
