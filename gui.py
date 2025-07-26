@@ -11,12 +11,15 @@ LIGHT_COLOR = "#dcd7ba"
 
 
 class GUIApp(tk.Tk):
-    def __init__(self, wm: WindowManager, km: KeyboardManager):
-        super().__init__()
+    def __init__(self, wm: WindowManager, km: KeyboardManager, hypr=None):
+        super().__init__(className="Windofman")
         self.wm = wm
         self.km = km
+        self.hypr = hypr
 
         self.edit_key = None
+
+        self.hyprland_address = None
 
         self.title("Windofman")
         self.configure(bg=DARK_COLOR)
@@ -44,6 +47,22 @@ class GUIApp(tk.Tk):
         self.go_page(HomePage)
         self.mainloop()
 
+    def focus_window(self):
+        """Focus on the main window."""
+        # self.deiconify()
+        # self.focus_force()
+        # self.lift()
+
+        if not self.hyprland_address:
+            self.hyprland_address = self.__get_hyprland_address()
+            if not self.hyprland_address:
+                print("Hyprland address not found.")
+                return
+
+        print(f"Focusing on Hyprland address: {self.hyprland_address}")
+        self.hypr.dispatch(["focuswindow", f"address:{self.hyprland_address}"])
+        self.hypr.dispatch(["alterzorder", "top"])
+
     def __init_frame(self):
         frame_classes = (
             HomePage,
@@ -60,6 +79,13 @@ class GUIApp(tk.Tk):
         self.unbind_all("<Return>")
         self.unbind_all("<KeyPress>")
         self.bind_all("<Escape>", lambda event: self.go_page(HomePage))
+
+    def __get_hyprland_address(self):
+        """Get the Hyprland address for the window manager."""
+        for window in self.hypr.get_windows():
+            print(f"Window: {window.title}, Address: {window.address}")
+            if window.wm_class == "Windofman":
+                return window.address
 
     def load_config(self):
         self.attributes("-topmost", self.wm.on_top)
@@ -127,8 +153,7 @@ class HomePage(tk.Frame):
         )
         label_initiative.grid(row=0, column=1, padx=10, pady=10)
 
-        label_ignore = tk.Label(self, text="Ignore",
-                                fg=LIGHT_COLOR, bg=DARK_COLOR)
+        label_ignore = tk.Label(self, text="Ignore", fg=LIGHT_COLOR, bg=DARK_COLOR)
         label_ignore.grid(row=0, column=2, padx=10, pady=10)
 
         label_link = tk.Label(self, text="Link", fg=LIGHT_COLOR, bg=DARK_COLOR)
@@ -155,8 +180,7 @@ class HomePage(tk.Frame):
                 bg=DARK_COLOR,
             )
             label.bind(
-                "<Button-1>", lambda e, c=character: self.parent.wm.activate_window(
-                    c)
+                "<Button-1>", lambda e, c=character: self.parent.wm.activate_window(c)
             )
             label.grid(row=row, column=0, padx=10, pady=10, sticky="w")
 
@@ -184,8 +208,7 @@ class HomePage(tk.Frame):
                 lambda *args, c=character: self.__save_initiatives(c),
             )
             self.datas[character_name]["ign"] = ignore_var
-            ignore_checkbox = tk.Checkbutton(
-                self, variable=ignore_var, bg=DARK_COLOR)
+            ignore_checkbox = tk.Checkbutton(self, variable=ignore_var, bg=DARK_COLOR)
             ignore_checkbox.grid(row=row, column=2, padx=10, pady=10)
 
             # Link button
@@ -488,8 +511,7 @@ class ShortcutPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.__edit_shortcut("next"),
         )
-        next_shorcut_edit_button.grid(
-            row=0, column=2, padx=5, pady=5, sticky="w")
+        next_shorcut_edit_button.grid(row=0, column=2, padx=5, pady=5, sticky="w")
 
         prev_label = tk.Label(
             self, text="Previous character : ", fg=LIGHT_COLOR, bg=DARK_COLOR
@@ -506,8 +528,7 @@ class ShortcutPage(tk.Frame):
             fg=DARK_COLOR,
             command=lambda: self.__edit_shortcut("previous"),
         )
-        prev_shorcut_edit_button.grid(
-            row=1, column=2, padx=5, pady=5, sticky="w")
+        prev_shorcut_edit_button.grid(row=1, column=2, padx=5, pady=5, sticky="w")
 
         # btns
         btn_frame = tk.Frame(self, bg=DARK_COLOR)
@@ -555,8 +576,7 @@ class AssignKeyPage(tk.Frame):
         self.create_widgets()
 
     def set_bindings(self):
-        self.bind_all(
-            "<Escape>", lambda event: self.parent.go_page(ShortcutPage))
+        self.bind_all("<Escape>", lambda event: self.parent.go_page(ShortcutPage))
         self.bind_all("<KeyPress>", self.__assign_key)
 
     def create_widgets(self):

@@ -1,7 +1,6 @@
 from ewmh import EWMH
 
 from confManager import ConfManager
-from tools import get_character_name
 
 import time
 
@@ -18,12 +17,12 @@ class DofusWindow:
 
     _window_link_number = _get_window_link_number()
 
-    def __init__(self, window):
+    def __init__(self, window, hypr=None):
+        self.hypr = hypr
         self.window = window
 
-        character_name = get_character_name(ewmh.getWmName(window))
         self.name = (
-            character_name
+            window.title
             if not "Dofus'"
             else f"Need to be link {next(self._window_link_number)}"
         )
@@ -35,12 +34,20 @@ class DofusWindow:
         self.load_initiative()
         self.save_initiative()
 
+        self.__float_window()
+
     def __str__(self):
         return f"{self.name} {self.initiative} {self.ignore}"
 
+    def __float_window(self):
+        self.hypr.dispatch(["setfloating", f"address:{self.window.address}"])
+
     def activate(self):
-        ewmh.setActiveWindow(self.window)
-        ewmh.display.flush()
+        # ewmh.setActiveWindow(self.window)
+        # ewmh.display.flush()
+        self.hypr.dispatch(["focuswindow", f"address:{self.window.address}"])
+        self.hypr.dispatch(["alterzorder", "top"])
+        # hypr.dispatch(["fullscreen", "1"])
 
     def set_name(self, name):
         self.name = name
@@ -74,8 +81,9 @@ class DofusWindow:
 
 
 class WindowManager:
-    def __init__(self):
+    def __init__(self, hypr=None):
         self.ewmh = ewmh
+        self.hypr = hypr
         self.windows = []
         self.ignored = []
         self.current_window = []
@@ -103,25 +111,27 @@ class WindowManager:
 
     def get_alls_characters_names(self) -> list:
         characters = ConfManager.get_characters()
-        characters.sort(
-            key=lambda c: c[1], reverse=True)
+        characters.sort(key=lambda c: c[1], reverse=True)
 
         return [c[0] for c in characters]
 
     def __get_windows(self):
         windows = []
         old_windows = [w.window for w in self.windows]
+        old_windows_address = [w.address for w in old_windows]
 
-        for window in self.ewmh.getClientList():
-            window_name = self.ewmh.getWmName(window)
-            if window_name is not None and (
-                b"Dofus 3." in window_name or window_name == b"Dofus"
-            ):
-                if window in old_windows:
+        for window in self.hypr.get_windows():
+            window_class = window.wm_class
+
+            if window_class == "Dofus.x64":
+                if window.address in old_windows_address:
                     windows.append(
-                        [w for w in self.windows if w.window == window][0])
+                        [w for w in self.windows if w.window.address == window.address][
+                            0
+                        ]
+                    )
                 else:
-                    windows.append(DofusWindow(window))
+                    windows.append(DofusWindow(window, self.hypr))
 
         self.windows = windows
 
@@ -132,8 +142,7 @@ class WindowManager:
         settings = ConfManager.get_settings()
         self.on_top = settings["on_top_settings"]
         self.location = (
-            settings["location"] if "location" in settings.keys() else (
-                None, None)
+            settings["location"] if "location" in settings.keys() else (None, None)
         )
 
     def __set_current_window(self):
