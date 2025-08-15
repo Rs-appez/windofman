@@ -49,6 +49,16 @@ class DofusWindow:
         self.hypr.dispatch(["alterzorder", "top"])
         # hypr.dispatch(["fullscreen", "1"])
 
+    def place(self):
+        self.hypr.dispatch(
+            ["resizewindowpixel exact 3834 1564",
+                f",address:{self.window.address}"]
+        )
+        self.hypr.dispatch(
+            ["movewindowpixel exact 1923 -517",
+                f",address:{self.window.address}"]
+        )
+
     def set_name(self, name):
         self.name = name
         self.initiative = 0
@@ -142,7 +152,8 @@ class WindowManager:
         settings = ConfManager.get_settings()
         self.on_top = settings["on_top_settings"]
         self.location = (
-            settings["location"] if "location" in settings.keys() else (None, None)
+            settings["location"] if "location" in settings.keys() else (
+                None, None)
         )
 
     def __set_current_window(self):
@@ -189,6 +200,10 @@ class WindowManager:
     def close_all_windows(self):
         for window in self.windows:
             self.ewmh.setCloseWindow(window.window)
+
+    def place_all_windows(self):
+        for window in self.windows:
+            window.place()
 
     def sort_windows(self):
         self.windows = sorted(
