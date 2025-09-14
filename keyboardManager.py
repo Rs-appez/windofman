@@ -7,6 +7,8 @@ import threading
 class KeyboardManager:
     def __init__(self, windowManager: WindowManager):
         self.alt_pressed = False
+        self.current_window = None
+        self.switch_pressed = False
         self.windowManager = windowManager
 
         self.next_key = keyboard.Key.f2
@@ -34,16 +36,28 @@ class KeyboardManager:
             self.alt_pressed = True
 
         try:
-            if key == self.next_key:
+            if key == self.next_key and not self.switch_pressed:
+                self.switch_pressed = True
+                self.current_window = self.windowManager.current_window
                 self.windowManager.next()
-            if key == self.previous_key:
+            if key == self.previous_key and not self.switch_pressed:
+                self.switch_pressed = True
+                self.current_window = self.windowManager.current_window
                 self.windowManager.previous()
         except AttributeError:
             return
 
     def on_release(self, key):
+        # Avoid switching multiple times if key is held down and window changed
+        if self.current_window != self.windowManager.current_window:
+            self.current_window = self.windowManager.current_window
+            return
+
         if key == keyboard.Key.alt:
             self.alt_pressed = False
+
+        if key == self.next_key or key == self.previous_key:
+            self.switch_pressed = False
 
     def start_thread(self):
         thread = threading.Thread(target=self.run, args=[])
