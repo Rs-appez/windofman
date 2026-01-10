@@ -55,7 +55,7 @@ class DofusWindow:
                 f",address:{self.window.address}"]
         )
         self.hypr.dispatch(
-            ["movewindowpixel exact 1923 -517",
+            ["movewindowpixel exact 1923 -717",
                 f",address:{self.window.address}"]
         )
 
