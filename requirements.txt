@@ -1,5 +1,11 @@
+annotated-types==0.7.0
 evdev==1.9.2
 ewmh==0.1.6
+hyprpy==0.2.0
+pydantic==2.12.5
+pydantic_core==2.41.5
 pynput==1.8.1
 python-xlib==0.33
 six==1.17.0
+typing-inspection==0.4.2
+typing_extensions==4.15.0
