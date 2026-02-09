@@ -1,4 +1,4 @@
-evdev==1.9.2
+evdev==1.9.3
 ewmh==0.1.6
 pynput==1.8.1
 python-xlib==0.33
