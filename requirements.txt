@@ -1,5 +1,5 @@
 evdev==1.9.3
 ewmh==0.1.6
-pynput==1.8.1
+pynput==1.8.2
 python-xlib==0.33
 six==1.17.0
